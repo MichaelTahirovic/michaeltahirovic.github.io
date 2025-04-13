@@ -7,7 +7,7 @@
 }
 
 body {
-    background-color: #161229;
+    background-color: #ffffff;
 }
 
 
@@ -102,6 +102,8 @@ body {
     opacity: 0.5;
     z-index: 2;
 }
+
+/* Main Page Content */
 .Triangle_Things {
     display : flex;
     width : 100%;
@@ -109,7 +111,7 @@ body {
     align-items : center;
     z-index: 5;
     position : absolute;
-    margin-top : -6.5rem;
+    margin-top : -20vh;
 }
 .Triangle_Left {
     width: 0;
@@ -126,8 +128,6 @@ body {
 	border-bottom: 15vh solid #161229;
 }
 
-
-/* Main Page Content */
 .Main_Content {
     display : flex;
     flex-direction : column;

@@ -1,7 +1,7 @@
 /* General Formatting */
 
 :root {
-    --background: #a8a8a8;
+    --background: #ffffff;
     --header-color: #3a3941;
     --header-font: #97a4b1;
     --default-font: #373737;
@@ -63,32 +63,32 @@ body {
 }
 
 /* Main Page */
-.Cool_Intro {
-    display : flex;
-    justify-content : center;
-    align-items : center;
-    padding : 1rem;
-    padding-top : 14rem;
-    padding-bottom : 0rem;
 
+
+.Title_Overlay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    top: 30vh;
+    width: 100%;
+    height: 30vh;
 }
 
-.Cool_Intro h1 {
-    font-size: 6rem;
+.Title_Overlay h1 {
+    font-size: 7rem;
     color : var(--header-font);
     font-family : 'Roboto', sans-serif;
     z-index: -1;
     text-align : center;
     position : fixed;
-    padding : 2rem;
-    padding-top : 12rem;
 }
 
 .Video_Background {
-    height : 40rem;
+    height : 100vh;
     width : 100%;
     display : flex;
-    margin-top : -22rem;
+    margin-top : -28.2vh;
     z-index : 0;
 }
 
@@ -97,14 +97,13 @@ body {
     height : 140%;
     object-fit : fill;
     position : fixed;
-    margin-top : -2rem;
     z-index : -1000;
 }
 
 .Video_Blur {
-    height : 50rem;
+    height : 200vh;
     width : 100%;
-    margin-top : -22rem;
+    margin-top : -30vh;
     position : absolute;
     background-color: black;
     opacity: 0.3;
@@ -115,16 +114,16 @@ body {
 .Triangles {
     display : flex;
     flex-direction: column;
-    position : absolute;
+    position : relative;
     z-index: -1;
     width: 100%;
-    margin-top: -8rem;
+    bottom: 13vh;
 }
 
 .Triangle_Things {
     display : flex;
     justify-content : space-between;
-    align-items : center;
+    align-items : flex-end;
     position : absolute;
 }
 .Triangle_Left {
@@ -139,13 +138,6 @@ body {
 	height: 0;
 	border-right: 50vw solid transparent;
 	border-bottom: 15vh solid var(--background);
-}
-.Error_Rectangle {
-    width: 100%;
-    height: 40vh;
-    position: absolute;
-    background-color: var(--background);
-    margin-top: 6rem;
 }
 
 .Main_Content {

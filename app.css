@@ -326,7 +326,7 @@ body {
 .Description_Me img {
     width : 15rem;
     height : 15rem;
-    border: #ffffff solid 0.5rem;
+    border: rgb(230, 230, 230) solid 0.5rem;
     border-radius : 50%;
     margin-left : 2rem;
     margin-top : 2rem;
@@ -335,7 +335,7 @@ body {
 
 .Description_Me h1 {
     font-size : 4rem;
-    color : rgb(151, 164, 177);
+    color : var(--header-font);
     font-family : 'Roboto', sans-serif;
     padding-top : 1rem;
     margin-left : -0.2rem;

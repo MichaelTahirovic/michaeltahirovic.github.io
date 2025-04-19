@@ -70,9 +70,9 @@ body {
     justify-content: center;
     align-items: center;
     position: relative;
-    top: 30vh;
+    top: 40vh;
     width: 100%;
-    height: 30vh;
+    height: 15vh;
 }
 
 .Title_Overlay h1 {
@@ -117,7 +117,7 @@ body {
     position : relative;
     z-index: -1;
     width: 100%;
-    bottom: 13vh;
+    height: 13vh;
 }
 
 .Triangle_Things {
@@ -138,6 +138,43 @@ body {
 	height: 0;
 	border-right: 50vw solid transparent;
 	border-bottom: 15vh solid var(--background);
+}
+
+.Arrow_Container{
+    display : flex;
+    justify-content : space-between;
+    align-items : flex-end;
+    position : absolute;
+    bottom : 0;
+    width: 15%;
+    height : 100%;
+    align-self: center;
+    top: -2vh;
+}
+.Down_Arrow {
+    display : flex;
+    justify-content : center;
+    align-items : flex-end;
+    width: 2vw;
+    height : 15vh;
+}
+.Down_Arrow_Shaft {
+    position: absolute;
+    top: -1vh;;
+    width: 10%;
+    height: 85%;
+    background-color: var(--background);
+    border-radius: 0.3vw;
+}
+.Down_Arrow_Head {
+    position: relative;
+    bottom: 1vh;
+    width: 100%;
+    height: 0%;
+    border-left: 2vw solid transparent;
+    border-right: 2vw solid transparent;
+    border-top: 4vh solid var(--background);
+    border-radius: 1vh;
 }
 
 .Main_Content {

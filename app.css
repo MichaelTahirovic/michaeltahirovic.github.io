@@ -24,7 +24,7 @@ body {
 
 /* Website Header */
 .Header {
-    width : 100%;
+    width : 100vw;
     margin : 0;
     padding : 0.5rem;
     display : flex;
@@ -100,7 +100,8 @@ body {
 
 .Video_Background {
     height : 100vh;
-    width : 100%;
+    width : auto;
+    max-width: 100vw;
     display : flex;
     margin-top : -28.2vh;
     z-index : 0;
@@ -210,7 +211,6 @@ body {
     margin-bottom: 1.5rem;
 }
 
-
 /* Content Card */
 .Sub_Content {
     display: flex;
@@ -317,7 +317,7 @@ body {
     width : 100%;
     height: auto;
     min-height : 100vh;
-    padding: 3rem;
+    padding: 0rem;
     padding-top: 0;
     padding-bottom: 4rem;
     margin-top: 2rem;
@@ -348,10 +348,11 @@ body {
 .Blog_Container {
     display : flex;
     justify-content : space-evenly;
+    align-items: center;
     flex-direction: row;
     width : 100%;
-    height : 70vh;
-    padding-bottom: 1rem;
+    height: 70vh;
+    min-height: 28rem;
 }
 .Blog_Post {
     display : flex;
@@ -368,6 +369,8 @@ body {
 .Blog_Post h1 {
     padding-top : 1rem;
     padding-bottom: 0.3rem;
+    font-size: 2rem;
+    color: var(--default-font);
 }
 .Blog_Post p {
     font-size: 1rem;
@@ -445,6 +448,7 @@ body {
 
 /* Styles for tablets (screen width 768px or smaller) */
 @media (max-width: 769px) {
+    
     .Title_Overlay h1 {
         font-size: 4rem; /* Reduce font size for smaller screens */
     }
@@ -487,34 +491,64 @@ body {
     }
 
     .Sub_Content_Text {
-        width: 100%; /* Make text container take full width */
-        margin: 0; /* Remove margin for smaller screens */
+        width: 100%;
+        margin: 0;
         border-radius: 0 0 1rem 1rem;
+    }
+
+    .Blog_Post h1 {
+        font-size: 1.5rem;
+    }
+    .Blog_Post p {
+        font-size: 0.9rem;
     }
 }
 
 /* Styles for mobile devices (screen width 480px or smaller) */
 @media (max-width: 480px) {
+    .Title_Overlay h1 {
+        font-size: 3rem; /* Further reduce font size for mobile */
+    }
+
     .Sub_Content {
         padding-left: 1rem;
         padding-right: 1rem;
     }
     .Sub_Content_Text h1 {
-        font-size: 1.5rem; /* Reduce font size for smaller screens */
+        font-size: 1.5rem;
     }
     .Sub_Content_Text p {
-        font-size: 1rem; /* Adjust paragraph font size */
+        font-size: 1rem;
     }
 
+    .Blog_Section {
+        padding: 0rem;
+        padding-top: 0;
+        padding-bottom: 2rem;
+    }
+    .Blog_Title {
+        position: relative;
+        top: 0;
+        margin-bottom: 1rem;
+    }
+    .Blog_Title h1 {
+        font-size: 2rem;
+    }
     .Blog_Container {
-        flex-direction: column;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        margin-left: 1rem;
     }
     .Blog_Post {
-        width: 90%; /* Make blog posts take full width */
-        margin: 1rem 0; /* Add margin between blog posts */
+        width: 85%;
+        flex: 0 0 auto;
+        padding: 1.5rem;
+        margin-left: 1rem;
+        scroll-snap-align: start;
     }
-
+      
     .Main_Footer {
-        flex-direction: column; /* Stack footer content vertically */
+        flex-direction: column;
     }
 }

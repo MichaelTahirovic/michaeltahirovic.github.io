@@ -1,5 +1,4 @@
 /* General Formatting */
-
 :root {
     --background: #ffffff;
     --background2: #383f41;
@@ -36,7 +35,6 @@ body {
     z-index: 10000;
     position: fixed;
 }
-
 .Header h1 {
     font-size : 1.5rem;
     font-family : 'Roboto', sans-serif;
@@ -56,7 +54,6 @@ body {
     padding-right : 2rem;
     gap : 1rem;
 }
-
 .Directory a:link, a:visited {
     text-decoration : none;
     font-family : 'Roboto', sans-serif;
@@ -70,13 +67,12 @@ body {
     display : flex;
     justify-content : center;
     align-items : center;
-    position: relative;
+    position: static;
     width : 100vw;
-    height : 5rem;
+    height : 4.2rem;
     background-color: var(--header-color);
     color: var(--header-font);
     z-index: 10000;
-    margin-top: auto;
 }
 
 /* Main Page */
@@ -85,11 +81,10 @@ body {
     justify-content: center;
     align-items: center;
     position: relative;
-    top: 40vh;
+    top: 45vh;
     width: 100%;
     height: 15vh;
 }
-
 .Title_Overlay h1 {
     font-size: 6rem;
     color : var(--header-font);
@@ -97,10 +92,10 @@ body {
     z-index: -1;
     text-align : center;
     position : fixed;
-    background-color: var(--header-color);
-    padding : 2rem;
-    border-radius: 3rem;
-    opacity: 0.95;
+    background-color: black;
+    padding : 0.7rem;
+    opacity: 0.8;
+    width: 100%;
 }
 
 .Video_Background {
@@ -110,7 +105,6 @@ body {
     margin-top : -28.2vh;
     z-index : 0;
 }
-
 .Video_Background video {
     width : 100%;
     height : 140%;
@@ -118,7 +112,6 @@ body {
     position : fixed;
     z-index : -1000;
 }
-
 .Video_Blur {
     height : 200vh;
     width : 100%;
@@ -137,7 +130,6 @@ body {
     width: 100%;
     height: 13vh;
 }
-
 .Triangle_Things {
     display : flex;
     justify-content : space-between;
@@ -225,52 +217,47 @@ body {
     align-items: center;
     justify-content: center;
     flex-direction: row;
-    height: 50rem;
-    width: 100%;
+    height: auto;
+    min-height: 100vh;
+    width: 100vw;
     max-width: 100%;
     padding-left: 3rem;
     padding-right: 3rem;
-    position: sticky;
-    top: 1rem; /* Adjust this value to control when it gets stuck */
-    z-index: 10;
+    position: sticky; /* Changed from sticky to relative to prevent overlap */
+    top: 0;
+    z-index: 1;
     background-color: var(--background);
+    margin-top: 0vh;
 }
-
 .Content_Backdrop1 {
     background-color: var(--background2);
-    width: 100%;
-    height: 50rem;
-    padding-left: 3.5rem;
-    padding-right: 3.5rem;
 }
 
 .Image_Right {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    height : 100%;
+    height: 100%;
     width : 45%;
-    padding-left : 3.5vw;
+    padding-left : 3.5rem;
+    padding-right: 2rem;
     transform: rotateZ(1deg);
 }
-
 .Image_Left {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: left;
     height: 100%;
     width: 45%;
-    padding-right: 3.5vw;
+    padding-right: 3.5rem;
+    padding-left:2rem;
     transform: rotateZ(-1deg);
 }
-
 .Cropped_Image {
     display: flex;
     object-fit: contain;
     border-radius: 1.5rem;
 }
-
 .bottom_shadow {
     width : 100%;
     height : 1rem;
@@ -296,7 +283,6 @@ body {
     overflow: hidden;
     z-index: 1;
 }
-
 .Sub_Content_Text h1 {
     font-size: clamp(1.5rem, 2.5vw, 2.5rem); /* Sets a responsive font size with a max of 2.5rem */
     font-family: 'Roboto', sans-serif;
@@ -311,7 +297,6 @@ body {
     display: flex;
     flex-direction: column;
 }
-
 .Sub_Content button {
     background-color: #394552;
     color: white;
@@ -328,35 +313,76 @@ body {
 .Blog_Section {
     display : flex;
     flex-direction : column;
-    justify-content : center;
     align-items : center;
     width : 100%;
-    height : 100%;
+    height : 100vh;
+    padding: 3rem;
+    padding-bottom: 5rem;
     margin-top: 2rem;
-    margin-bottom: 2rem;
     position: sticky;
+    top: 2vh;
     z-index: 10;
+    background-color: var(--background2);
+}
+.Blog_Section h1 {
+    font-size : 2rem;
+    color : var(--header-font);
+    font-family : 'Roboto', sans-serif;
+    padding-top : 3rem;
+    padding-bottom : 1.5rem;
 }
 .Blog_Container {
     display : flex;
     justify-content : space-evenly;
-    align-items : center;
     flex-direction: row;
     width : 100%;
-    height : 100%;
-
+    height : 80%;
+    padding-bottom: 1rem;
 }
 .Blog_Post {
     display : flex;
-    justify-content : center;
+    justify-content : flex-start;
     align-items : center;
     flex-direction: column;
     width : 40%;
     height : 100%;
-    margin-top: 2rem;
     padding: 1rem;
     background-color: var(--sub-content);
     border-radius: 1rem;
+}
+.Blog_Post h1 {
+    padding-top : 1rem;
+    padding-bottom: 0.3rem;
+}
+.Blog_Post p {
+    font-size: 1rem;
+    font-family: 'Helvetica', sans-serif;
+    padding: 0.5rem;
+    padding-top: 0.7rem;
+    display: flex;
+    flex-direction: column;
+}
+.Blog_Post img {
+    width : 100%;
+    height : 40%;
+    border-radius: 1rem;
+    object-fit: cover;
+}
+.Blog_Post a {
+    justify-self: flex-end;
+}
+.Blog_Post button {
+    background-color: #394552;
+    color: white;
+    width: 100%;
+    font-size: 1.1rem;
+    font-family: 'Roboto', sans-serif;
+    padding: 0.5rem;
+    margin-top: 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    justify-self: flex-end;
 }
 
 
@@ -368,7 +394,6 @@ body {
     padding-top : 5.5rem;
 
 }
-
 .Description_Me img {
     width : 15rem;
     height : 15rem;
@@ -378,7 +403,6 @@ body {
     margin-top : 2rem;
     margin-right : 0.5rem;
 }
-
 .Description_Me h1 {
     font-size : 4rem;
     color : var(--header-font);
@@ -386,13 +410,11 @@ body {
     padding-top : 1rem;
     margin-left : -0.2rem;
 }
-
 .Description_Me h2 {
     font-size : 1.5rem;
     color : rgb(104, 112, 121);
     font-family : 'Roboto', sans-serif;
 }
-
 .Description_Me h3 {
     font-size : 1rem;
     color : rgb(104, 112, 121);
@@ -402,4 +424,81 @@ body {
 .Name_Title {
     vertical-align : bottom;
     padding-left : 1.5rem;
+}
+
+
+/* Styles for tablets (screen width 768px or smaller) */
+@media (max-width: 769px) {
+    .Title_Overlay h1 {
+        font-size: 4rem; /* Reduce font size for smaller screens */
+    }
+
+    .Sub_Content {
+        flex-direction: column-reverse; /* Stack content vertically */
+        padding: 2rem;
+        padding-top: 4rem;
+        padding-bottom: 4rem;
+        position: relative;
+        justify-content: center;
+    }
+    .Content_Backdrop1 {
+        flex-direction: column; /* Stack content vertically */
+    }
+
+    .Image_Right, .Image_Left {
+        width: 100% !important; /* Make images take full width */
+        height: 15rem;
+        padding: 0;
+        transform: rotateZ(0deg); /* Remove rotation for smaller screens */
+        object-fit: cover;
+    }
+    .Image_Right {
+        justify-content: start;
+    }
+    .Image_Left {
+        justify-content: end;
+    }
+    .Cropped_Image {
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+        border-radius: 1rem 1rem 0 0;
+    }
+    .bottom_shadow {
+        height: 0;
+        margin: 0;
+        opacity: 0;
+    }
+
+    .Sub_Content_Text {
+        width: 100%; /* Make text container take full width */
+        margin: 0; /* Remove margin for smaller screens */
+        border-radius: 0 0 1rem 1rem;
+    }
+}
+
+/* Styles for mobile devices (screen width 480px or smaller) */
+@media (max-width: 480px) {
+    .Sub_Content {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    .Sub_Content_Text h1 {
+        font-size: 1.5rem; /* Reduce font size for smaller screens */
+    }
+    .Sub_Content_Text p {
+        font-size: 1rem; /* Adjust paragraph font size */
+    }
+
+    .Blog_Container {
+        flex-direction: column;
+    }
+    .Blog_Post {
+        width: 90%; /* Make blog posts take full width */
+        margin: 1rem 0; /* Add margin between blog posts */
+    }
+
+    .Main_Footer {
+        flex-direction: column; /* Stack footer content vertically */
+    }
 }

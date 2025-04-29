@@ -451,13 +451,26 @@ body {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* About Page */
 .Description_Me {
     display : flex;
+    position : relative;
     align-items : center;
     padding : 3rem;
-    padding-top : 5.5rem;
-
+    top: 3vh;
 }
 .Description_Me img {
     width : 15rem;
@@ -485,11 +498,51 @@ body {
     color : rgb(104, 112, 121);
     font-family : 'Roboto', sans-serif;
 }
-
 .Name_Title {
     vertical-align : bottom;
     padding-left : 1.5rem;
 }
+
+.AboutMe_Section {
+    display : flex;
+    flex-direction : column;
+    width : 100%;
+    height: auto;
+    min-height : 90vh;
+    padding: 4rem;
+    padding-top: 0;
+    padding-bottom: 2rem;
+    position: relative;
+    z-index: 10;
+}
+.AboutMe_Section h1 {
+    font-size : 2rem;
+    color : var(--default-font);
+    font-family : 'Roboto', sans-serif;
+    padding-top : 1.5rem;
+    padding-bottom : 1.5rem;
+}
+.AboutMe_Section p {
+    font-size: 1.2rem;
+    font-family: 'Helvetica', sans-serif;
+    padding: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    border-radius: 1rem;
+    background-color: var(--sub-content);
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /* Styles for tablets (screen width 1022px or smaller) */

@@ -3,6 +3,7 @@
     --background: #ffffff;
     --background2: #383f41;
     --header-color: #3a3941;
+    --header-color2: #474650;
     --header-font: #97a4b1;
     --default-font: #373737;
     --sub-content: #dbdbdb;
@@ -196,19 +197,11 @@ body {
     width : 100vw;
     height : auto;
     min-height: 150%;
-    padding-top : 3rem;
+    padding-top : 0rem;
     position : absolute;
     align-items : center;
     color : var(--default-font);
     font-family : 'Roboto', sans-serif;
-}
-
-.Section_Title {
-    display : flex;
-    font-size : 2rem;
-    justify-content : center;
-    text-align: center;
-    margin-bottom: 1.5rem;
 }
 
 /* Content Card */
@@ -223,11 +216,11 @@ body {
     max-width: 100%;
     padding-left: 3rem;
     padding-right: 3rem;
-    position: sticky; /* Changed from sticky to relative to prevent overlap */
-    top: 0;
+    position: sticky;
+    top: 4vh;
     z-index: 1;
     background-color: var(--background);
-    margin-top: 0vh;
+    margin-bottom: 2vh;
 }
 .Content_Backdrop1 {
     background-color: var(--background2);
@@ -239,8 +232,8 @@ body {
     justify-content: center;
     height: 100%;
     width : 45%;
-    padding-left : 3.5rem;
-    padding-right: 2rem;
+    padding-left : 1rem;
+    padding-right: 0;
     transform: rotateZ(1deg);
 }
 .Image_Left {
@@ -249,8 +242,8 @@ body {
     justify-content: center;
     height: 100%;
     width: 45%;
-    padding-right: 3.5rem;
-    padding-left:2rem;
+    padding-right: 1rem;
+    padding-left: 0;
     transform: rotateZ(-1deg);
 }
 .Cropped_Image {
@@ -263,48 +256,66 @@ body {
     height : 1rem;
     margin-top: 2vh;
     background-color : black;
-    opacity : 0.05;
+    opacity : 0.1;
     border-radius: 100px;
     box-shadow: 0px 0px 5px black;
 }
 
 .Sub_Content_Text {
+    position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    align-items: center;
     width: auto; 
-    height: auto;
+    height: 100%;
     min-height: 30%;
     flex-grow: 1;
     margin: 2vw;
-    background-color: var(--sub-content);
-    border-radius: 1rem;
+    margin-left: 0;
     color: var(--default-font);
-    overflow: hidden;
     z-index: 1;
 }
 .Sub_Content_Text h1 {
-    font-size: clamp(1.5rem, 2.5vw, 2.5rem); /* Sets a responsive font size with a max of 2.5rem */
+    font-size: clamp(2.5rem, 3vw, 4rem); /* Sets a responsive font size with a max of 2.5rem */
     font-family: 'Roboto', sans-serif;
-    padding: 2rem;
-    padding-bottom: 0rem;
+    width: 100%;
+    padding: 1rem;
+    border-radius: 1rem;
+    background-color: var(--sub-content);
+    margin-bottom: 6vh;
+    top: 0;
+    transform: rotateZ(-2deg);
+}
+.Sub_Content_Text_Right {
+    margin-left: 2vw;
+    margin-right: 0;
+}
+.Sub_Content_Text_Right h1 {
+    transform: rotateZ(2deg);
 }
 .Sub_Content_Text p {
-    font-size: clamp(1rem, 1.2vw, 1.2rem); /* Sets a responsive font size with a max of 1.2rem */
+    font-size: clamp(1rem, 1.3vw, 1.5rem);
     font-family: 'Helvetica', sans-serif;
-    padding: 2rem;
-    padding-top: 0.7rem;
+    padding: 1.2rem;
     display: flex;
     flex-direction: column;
+    border-radius: 1rem;
+    background-color: var(--sub-content);
+}
+.Sub_Content a {
+    margin-top: auto;
+    width: 100%;
+    height: auto;
+    bottom: 0;
 }
 .Sub_Content button {
     background-color: #394552;
     color: white;
     width: 100%;
-    font-size: 1.1rem;
+    height: 100%;
+    font-size: clamp(1rem, 1.3vw, 1.5rem);
     font-family: 'Roboto', sans-serif;
     padding: 0.5rem;
-    margin-top: 1rem;
     border-radius: 0.5rem;
     border: none;
     cursor: pointer;
@@ -316,10 +327,10 @@ body {
     align-items : center;
     width : 100%;
     height: auto;
-    min-height : 100vh;
+    min-height : 90vh;
     padding: 0rem;
     padding-top: 0;
-    padding-bottom: 4rem;
+    padding-bottom: 2rem;
     margin-top: 2rem;
     position: relative;
     z-index: 10;
@@ -335,36 +346,64 @@ body {
 .Blog_Title {
     width : 100vw;
     text-align: center;
-    background-color: var(--header-color);
+    background-color: var(--header-color2);
     margin-bottom: 3rem;
     position: sticky;
-    top: 5vh;
+    top: 7vh;
     z-index: 1;
 }
 .Blog_Title h1 {
     font-size: 3rem;
     color: var(--sub-content);
+    padding-bottom: 1rem;
 }
 .Blog_Container {
-    display : flex;
-    justify-content : space-evenly;
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    scroll-snap-align: start;
     align-items: center;
     flex-direction: row;
-    width : 100%;
+    padding: 1rem;
+    padding-left: 0;
+    width: 100%;
     height: 70vh;
     min-height: 28rem;
+}
+/* Custom Scrollbar Styling */
+.Blog_Container::-webkit-scrollbar {
+    height: 8px;
+}
+.Blog_Container::-webkit-scrollbar-thumb {
+    background-color: rgb(190, 190, 190);
+    border-radius: 4px;
+}
+.Blog_Container::-webkit-scrollbar-thumb:hover {
+    background-color: white;
+}
+.Blog_Container::-webkit-scrollbar-track {
+    background-color: rgb(54, 54, 54);
 }
 .Blog_Post {
     display : flex;
     justify-content : flex-start;
     align-items : center;
     flex-direction: column;
-    width : 40%;
-    height : 100%;
+    width : 35%;
+    height : 98%;
     padding: 1rem;
+    flex: 0 0 auto;
+    margin-left: 1.5rem;
     background-color: var(--sub-content);
     border-radius: 1rem;
     position: relative;
+    transition: all 0.2s ease-in-out;
+}
+.Blog_Post:hover {
+    width: 36%;
+    height: 100%;
+    box-shadow: 0px 0px 5px black;
+    transition: all 0.2s ease-in-out;
 }
 .Blog_Post h1 {
     padding-top : 1rem;
@@ -375,7 +414,7 @@ body {
 .Blog_Post p {
     font-size: 1rem;
     font-family: 'Helvetica', sans-serif;
-    padding: 0.5rem;
+    padding: auto;
     padding-top: 0.7rem;
     display: flex;
     flex-direction: column;
@@ -402,6 +441,13 @@ body {
     border-radius: 0.5rem;
     border: none;
     cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    align-self: center;
+}
+.Blog_Post:hover button {
+    background-color: #445566;
+    font-size: 1.2rem;
+    transition: all 0.3s ease-in-out;
 }
 
 
@@ -446,8 +492,8 @@ body {
 }
 
 
-/* Styles for tablets (screen width 768px or smaller) */
-@media (max-width: 769px) {
+/* Styles for tablets (screen width 1022px or smaller) */
+@media (max-width: 1022px) {
     
     .Title_Overlay h1 {
         font-size: 4rem; /* Reduce font size for smaller screens */
@@ -492,20 +538,65 @@ body {
 
     .Sub_Content_Text {
         width: 100%;
+        height: 60%;
+        max-height: fit-content;
         margin: 0;
         border-radius: 0 0 1rem 1rem;
+        align-items: start;
+        background-color: var(--sub-content);
+    }
+    .Sub_Content_Text h1 {
+        padding: 2rem;
+        padding-bottom: 0;
+        border-radius: 0;
+        margin-bottom: 0;
+        transform: rotateZ(0deg);
+        background-color: transparent;
+
+    }
+    .Sub_Content_Text p {
+        width: 100%;
+        padding: 2rem;
+        padding-top: 0.7rem;
+        background-color: transparent;
+    }
+    .Sub_Content_Text_Right h1 {
+        transform: rotateZ(0deg);
     }
 
+    .Blog_Container {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+    }
+    .Blog_Post {
+        width: 85%;
+        height: 100%;
+        flex: 0 0 auto;
+        padding: 1.5rem;
+        scroll-snap-align: start;
+    }
+    .Blog_Post:hover {
+        width: 85%;
+        height: 100%;
+        box-shadow: 0px 0px 0px black;
+        transition: all 0.0s ease-in-out;
+    }
     .Blog_Post h1 {
         font-size: 1.5rem;
     }
     .Blog_Post p {
         font-size: 0.9rem;
     }
+    .Blog_Post:hover button {
+        background-color: #445566;
+        font-size: 1.1rem;
+        transition: all 0.3s ease-in-out;
+    }
 }
 
-/* Styles for mobile devices (screen width 480px or smaller) */
-@media (max-width: 480px) {
+/* Styles for mobile devices (screen width 766px or smaller) */
+@media (max-width: 766px) {
     .Title_Overlay h1 {
         font-size: 3rem; /* Further reduce font size for mobile */
     }
@@ -533,19 +624,6 @@ body {
     }
     .Blog_Title h1 {
         font-size: 2rem;
-    }
-    .Blog_Container {
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        scroll-snap-type: x mandatory;
-        margin-left: 1rem;
-    }
-    .Blog_Post {
-        width: 85%;
-        flex: 0 0 auto;
-        padding: 1.5rem;
-        margin-left: 1rem;
-        scroll-snap-align: start;
     }
       
     .Main_Footer {

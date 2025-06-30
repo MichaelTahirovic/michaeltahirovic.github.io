@@ -1,2 +1,0 @@
-# My Website!!!
-These are the files to my very own personal website. I'm planning on building it up over time to add in all my cool projects and intrests but right now it's probably not looking like much.

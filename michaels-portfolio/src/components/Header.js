@@ -3,14 +3,14 @@ import { Link } from 'react-router-dom';
 
 export default function Header() {
   return (
-    <header className="Header">
-      <div className="Header_Title">
-        <h1><Link to="/">Michael Tahirovic</Link></h1>
+    <header className="width-full bg-headerColor text-headerFont flex justify-between items-center px-4 py-2 sticky top-0 z-50">
+      <div>
+        <h1 className="font-roboto text-3xl px-1"><Link to="/">Michael Tahirovic</Link></h1>
       </div>
-      <nav className="Directory">
-        <Link to="/about">About Me</Link>
-        <Link to="/jobs">Employment</Link>
-        <Link to="/projects">Projects</Link>
+      <nav className="flex justify-space-between items-center p-1 pr-px-2 gap-4">
+        <Link className="text-headerFont hover:text-white" to="/about">About Me</Link>
+        <Link className="text-headerFont hover:text-white" to="/jobs">Employment</Link>
+        <Link className="text-headerFont hover:text-white" to="/projects">Projects</Link>
       </nav>
     </header>
   );

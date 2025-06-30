@@ -1,3 +1,4 @@
+/* This file uses Tailwind CSS directives and must be processed with Tailwind CLI or a build tool */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

@@ -18,6 +18,7 @@ export default function Home() {
     <div className="flex flex-col items-center">
       <Video />
       <Title handleScroll={handleScroll}/>
+      <Triangles />
       <CardRight
         ref={firstCardRef}
         image = {linkedinPfp}
@@ -67,36 +68,37 @@ function Video() {
 function Title({handleScroll}) {
   return (
     <div className="flex flex-col w-full h-screen items-center justify-end align-middle relative">
-        <div className="absolute inset-0 bg-black bg-opacity-40 items-center justify-center flex flex-col z-10">
-          <h1 className="w-full text-5xl md:text-9xl font-bold text-headerFont font-roboto text-center z-20">
+        <div className="fixed inset-0 bg-black bg-opacity-40 items-center justify-center flex flex-col ">
+          <h1 className="w-full text-5xl md:text-8xl font-bold text-headerFont font-roboto text-center ">
             This is
           </h1>
-          <h1 className="w-full h-1/2 text-5xl md:text-9xl font-bold bg-gradient-to-tr from-teal-200 to-blue-500 bg-clip-text text-transparent font-roboto text-center z-20">
+          <h1 className="w-full h-1/3 text-5xl md:text-9xl font-bold bg-gradient-to-tr from-teal-100 to-blue-800 bg-clip-text text-transparent font-roboto text-center z-20">
             Michael Tahirovic
           </h1>
         </div>
-        <button onClick={handleScroll} className="hidden md:flex relative flex-col w-1/6 inset-0  z-40">
-          <div
-              className="relative px-8 py-4 bg-white bg-opacity-80 rounded-full shadow-lg w-fit text-lg md:text-2xl font-bold text-defaultFont font-roboto hover:bg-opacity-100 transition-all duration-200 z-30"
-            >
-            Learn About Me!
-          </div>
-          <img src={process.env.PUBLIC_URL + '/media/downArrow.svg'} alt="Down Arrow" className="relative opacity-80 hover:opacity-100 w-14 h-14 block mt-4 m-auto z-20" />
-        </button>
-        <div className="relative w-full h-4">
-            <div className="absolute flex justify-between items-end w-full h-full z-10">
-              <div
-                className="w-0 h-0 border-r-[90vw] border-b-[16vh] border-r-transparent border-b-white"
-                style={{ borderRightColor: 'transparent', borderBottomColor: '#fff' }}>
-              </div>
-              <div
-                className="w-0 h-0 border-l-[6vw] border-b-[8vh] border-l-transparent border-b-white"
-                style={{ borderLeftColor: 'transparent', borderBottomColor: '#fff' }}
-              />
-            </div>
+        <div className="fixed bottom-20 w-full h-1/3 flex flex-col items-center justify-center">
+          <button onClick={handleScroll} className="hidden md:flex flex-col w-1/6 justify-center align-middle inset-0  z-10">
+            <img src={process.env.PUBLIC_URL + '/media/downArrow.svg'} alt="Down Arrow" className="opacity-70 hover:opacity-100 w-1/2 block mt-4 m-auto z-20" />
+          </button>
         </div>
-        <div className="relative bottom-0 w-full h-24 bg-white z-10"></div>
     </div>
+  );
+}
+
+function Triangles() {
+  return (
+  <>
+    <div className="relative w-full h-4 -mt-20 ">
+        <div className="absolute flex justify-between items-end w-full h-full z-10">
+          <div className="w-0 h-0 border-r-[90vw] border-b-[16vh] border-r-transparent border-b-headerColor"
+          />
+          <div
+            className="w-0 h-0 border-l-[6vw] border-b-[8vh] border-l-transparent border-b-headerColor"
+          />
+        </div>
+    </div>
+    <div className="relative bottom-0 w-full h-32  bg-gradient-to-b from-headerColor via-headerColor to-white z-10"></div>
+  </>
   );
 }
 

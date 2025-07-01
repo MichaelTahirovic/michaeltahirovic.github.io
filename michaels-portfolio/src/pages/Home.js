@@ -66,7 +66,7 @@ function Video() {
 
 function Title({handleScroll}) {
   return (
-    <div className="flex flex-col w-full h-screen items-center justify-end align-middle relative z-30">
+    <div className="flex flex-col w-full h-screen items-center justify-end align-middle relative">
         <div className="absolute inset-0 bg-black bg-opacity-40 items-center justify-center flex flex-col z-10">
           <h1 className="w-full text-5xl md:text-9xl font-bold text-headerFont font-roboto text-center z-20">
             This is
@@ -75,9 +75,9 @@ function Title({handleScroll}) {
             Michael Tahirovic
           </h1>
         </div>
-        <button onClick={handleScroll} className="hidden md:flex relative flex-col w-1/6 inset-0 mb-24 z-40">
+        <button onClick={handleScroll} className="hidden md:flex relative flex-col w-1/6 inset-0  z-40">
           <div
-              className="relative px-8 py-4 bg-white bg-opacity-80 rounded-full shadow-lg text-2xl font-bold text-defaultFont font-roboto hover:bg-opacity-100 transition-all duration-200 z-30"
+              className="relative px-8 py-4 bg-white bg-opacity-80 rounded-full shadow-lg w-fit text-lg md:text-2xl font-bold text-defaultFont font-roboto hover:bg-opacity-100 transition-all duration-200 z-30"
             >
             Learn About Me!
           </div>
@@ -103,7 +103,7 @@ function Title({handleScroll}) {
 
 const CardRight = React.forwardRef(function CardRight({image, title, description, link}, ref) {
   return (
-    <div ref={ref} className="flex flex-col md:flex-row items-center justify-center w-screen h-dvh md:h-screen md:min-h-fit max-w-full py-5 md:py-0 z-10 bg-background">
+    <div ref={ref} className="flex flex-col md:flex-row items-center justify-center w-screen h-dvh md:h-screen min-h-fit max-w-full py-5 md:py-0 z-10 bg-background">
       {/* Left Side Content */}
       <div className="flex flex-col justify-evenly flex-grow min-h-fit mx-2vw z-10 px-6 py-3 md:w-1/2 w-full relative">
         <h1 className="text-3xl md:text-5xl text-center md:text-left font-roboto w-full pb-2 p-4 md:p-4 rounded-t-lg md:rounded md:bg-opacity-0 bg-subContent md:mb-4">
@@ -120,7 +120,7 @@ const CardRight = React.forwardRef(function CardRight({image, title, description
         <p className="text-base font-helvetica p-5 rounded md:bg-opacity-0 bg-subContent w-full">
           {description || 'This is a default description. Please provide a description for this section.'}
         </p>
-        <Link to={link} className="flex justify-start w-full md:mt-5 hover:md:mt-4 md:px-5 transition-all transition-discrete duration-200">
+        <Link to={link} className="flex justify-center md:justify-start w-full md:mt-5 hover:md:mt-4 md:px-5 transition-all transition-discrete duration-200">
           <button className="bg-buttonColor text-white md:w-4/5 hover:md:w-full text-base hover:text-lg font-roboto p-2 rounded cursor-pointer mt-4 hover:bg-buttonHover transition-all transition-discrete duration-200">
             Learn More
           </button>
@@ -170,10 +170,10 @@ function CardLeft({image, title, description, link}) {
             className="object-contain object-right w-full max-h-screen rounded-b-lg"
           />
         </div>
-        <p className="text-base text-right text-defaultFont font-helvetica p-5 rounded md:bg-opacity-0 bg-subContent w-full">
+        <p className="text-base md:text-right text-defaultFont font-helvetica p-5 rounded md:bg-opacity-0 bg-subContent w-full">
           {description || 'This is a default description. Please provide a description for this section.'}
         </p>
-        <Link to={link} className="flex justify-end w-full md:mt-5 hover:md:mt-4 md:px-5 transition-all transition-discrete duration-200">
+        <Link to={link} className="flex justify-center md:justify-end w-full md:mt-5 hover:md:mt-4 md:px-5 transition-all transition-discrete duration-200">
           <button className="bg-buttonColor text-white md:w-4/5 hover:md:w-full text-base hover:text-lg font-roboto p-2 rounded cursor-pointer mt-4 hover:bg-buttonHover transition-all transition-discrete duration-200">
             Learn More
           </button>

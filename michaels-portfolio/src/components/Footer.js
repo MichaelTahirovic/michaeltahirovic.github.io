@@ -1,17 +1,10 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
 
-export default function Header() {
+export default function Footer() {
   return (
-    <header className="Header">
-      <div className="Header_Title">
-        <h1 className="bold"><Link to="/">Michael Tahirovic</Link></h1>
+    <footer className="flex justify-center items-center static full-width h-20 bg-headerColor text-headerFont z-20">
+      <div className="flex flex-row items-center justify-center w-full">
+          <p>Copyright<h1 className="font-bold"> Michael Tahirovic 2025</h1></p>
       </div>
-      <nav className="Directory">
-        <Link to="/about">About Me</Link>
-        <Link to="/jobs">Employment</Link>
-        <Link to="/projects">Projects</Link>
-      </nav>
-    </header>
+    </footer>
   );
 }

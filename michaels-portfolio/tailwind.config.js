@@ -4,14 +4,20 @@ module.exports = {
   theme: {
     colors: {
       background: '#ffffff',
-      backgroundAlt: '#383f41',
-      headerColor: '#3a3941',
-      headerFont: '#97a4b1',
+      backgroundAlt: '#e7e7e7',
+      backgroundDark: '#2c2c2c',
+      headerColor: '#444351',
+      headerFont: '#bbc0c6',
       defaultFont: '#373737',
       subContent: '#dbdbdb',
-      boxColor: '#8f6840',
+      buttonColor: '#394552',
+      buttonHover: '#445566',
+      buttonColorAlt: '#4a5b6c',
+      buttonHoverAlt: '#556677',
       white: '#ffffff',
       black: '#000000',
+      cyan: '#00bcd4',
+      blue: '#2196f3'
     },
     fontFamily: {
       roboto: ['Roboto', 'sans-serif'],

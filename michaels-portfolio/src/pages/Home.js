@@ -5,32 +5,53 @@ export default function Home() {
   // Use process.env.PUBLIC_URL to reference public/media assets
   const linkedinPfp = process.env.PUBLIC_URL + '/media/linkedinPfp.JPG';
   const cbotm = process.env.PUBLIC_URL + '/media/cbotm.png';
-  const myhonestreaction = process.env.PUBLIC_URL + '/media/myhonestreaction.mp4';
 
   return (
-    <div className="bg-white w-full min-h-screen flex flex-col items-center font-sans">
-      {/* Title Overlay and Video */}
-      <section className="relative w-full h-[100vh] flex flex-col items-center justify-center">
-        <div className="absolute inset-0 z-[-10]">
-          <video
-            className="w-full h-full object-cover fixed"
-            autoPlay
-            muted
-            loop
-            poster={linkedinPfp}
-          >
-            <source src={myhonestreaction} type="video/mp4" />
-          </video>
-          <div className="absolute inset-0 bg-black opacity-30 z-[-9]" />
-        </div>
-        <div className="flex justify-center items-center w-full h-[15vh] relative top-[45vh]">
-          <h1 className="text-[3rem] md:text-[4rem] lg:text-[6rem] text-[#97a4b1] font-roboto text-center bg-black bg-opacity-80 px-4 py-2 rounded opacity-80 fixed w-full z-10">
-            This is<br />Michael Tahirovic
-          </h1>
-        </div>
-      </section>
+    <div className="flex flex-col items-center">
+      <Video />
+      <Title />
+      <CardRight 
+        image = {linkedinPfp}
+        title = "Learn About The Coolest Person Ever"
+        description = "As a strong leader and great friend, Michael is a man of many talents. With a passion for learning, he excels at basically everything ever. He loves video games and spending time with his friends. Curently attending Wilfrid Laurier University to learn Business Administration and Computer Science, Michael believes he has many paths to take in his future."
+        link = "/about"
+      />
+      <CardLeft 
+        image = {cbotm}
+        title = "Awesome Projects By An Awesomer Guy"
+        description= "Check out these awesome computer design projects, along wih other things I've done!"
+        link = "/projects"
+      />
+      <CardRight 
+        image = {cbotm}
+        title = "My Amazing Work Experience"
+        description = "I have worked at many places, including a few internships. Check out my work experience and see how awesome I am!"
+        link = "/jobs"
+      />
+      <Socials />
+    </div>
+  );
+}
 
-      {/* Triangles */}
+function Video() {
+  const thumbnail = process.env.PUBLIC_URL + '/media/linkedinPfp.JPG';
+  const video = process.env.PUBLIC_URL + '/media/myhonestreaction.mp4';
+  /* Title Overlay and Video */
+  return (
+    <section className="relative w-full -z-50">
+      <div className="inset-0">
+        <video
+          className="w-full object-cover fixed"
+          autoPlay
+          muted
+          loop
+          poster={thumbnail}
+        >
+          <source src={video} type="video/mp4" />
+        </video>
+      </div>
+      
+      {/* Triangles I HATE THEM!!!!
       <div className="relative w-full h-[13vh] flex flex-col">
         <div className="absolute flex justify-between items-end w-full h-full z-[-1]">
           <div
@@ -42,114 +63,167 @@ export default function Home() {
             style={{ borderLeftColor: 'transparent', borderBottomColor: '#fff' }}
           />
         </div>
-      </div>
+      </div>*/} 
+    </section>
 
-      {/* Main Content */}
-      <section className="flex flex-col items-center w-full bg-white relative pt-0 text-[#373737] font-roboto">
-        {/* Card 1 */}
-        <div className="flex flex-row items-center justify-center w-full min-h-[100vh] max-w-full px-12 py-0 sticky top-[4vh] z-10 bg-white mb-[2vh]">
-          <div className="flex flex-col items-center flex-grow mx-[2vw] z-10">
-            <h1 className="text-[clamp(2.5rem,3vw,4rem)] font-roboto w-full p-4 rounded bg-[#dbdbdb] mb-[6vh] -rotate-2">
-              Learn About The Coolest Person Ever
-            </h1>
-            <p className="text-[clamp(1rem,1.3vw,1.5rem)] font-helvetica p-5 rounded bg-[#dbdbdb] flex flex-col">
-              As a strong leader and great friend, Michael is a man of many talents. With a passion for learning, he excels at basically everything ever. He loves video games and spending time with his friends. Curently attending Wilfrid Laurier University to learn Business Administration and Computer Science, Michael believes he has many paths to take in his future.
-              <br /> <br />
-              <Link to="/about">
-                <button className="bg-[#394552] text-white w-full text-[clamp(1rem,1.3vw,1.5rem)] font-roboto p-2 rounded cursor-pointer mt-4">
-                  &gt;&gt;Learn More
-                </button>
-              </Link>
-            </p>
-          </div>
-          <div className="flex flex-col justify-center w-[35%] pl-4">
-            <img src={linkedinPfp} alt="Michael Tahirovic" className="object-contain rounded-2xl w-full" />
-            <div className="w-full h-4 mt-8 bg-black opacity-10 rounded-[100px] shadow" />
-          </div>
-        </div>
+  );
+}
 
-        {/* Card 2 */}
-        <div className="flex flex-row items-center justify-center w-full min-h-[100vh] max-w-full px-12 py-0 sticky top-[4vh] z-10 bg-[#383f41] mb-[2vh]">
-          <div className="flex flex-col justify-center w-[35%] pr-4">
-            <img src={cbotm} alt="Michael Tahirovic" className="object-contain rounded-2xl w-full" />
-            <div className="w-full h-4 mt-8 bg-black opacity-10 rounded-[100px] shadow" />
-          </div>
-          <div className="flex flex-col items-center flex-grow mx-[2vw] z-10">
-            <h1 className="text-[clamp(2.5rem,3vw,4rem)] font-roboto w-full p-4 rounded bg-[#dbdbdb] mb-[6vh] rotate-2">
-              Awesome Projects By An Awesomer Guy
-            </h1>
-            <p className="text-[clamp(1rem,1.3vw,1.5rem)] font-helvetica p-5 rounded bg-[#dbdbdb] flex flex-col">
-              Check out these awesome computer design projects, along wih other things I've done!
-              <br /> <br />
-              <Link to="/projects">
-                <button className="bg-[#394552] text-white w-full text-[clamp(1rem,1.3vw,1.5rem)] font-roboto p-2 rounded cursor-pointer mt-4">
-                  &gt;&gt;Learn More
-                </button>
-              </Link>
-            </p>
-          </div>
-        </div>
-
-        {/* Card 3 */}
-        <div className="flex flex-row items-center justify-center w-full min-h-[100vh] max-w-full px-12 py-0 sticky top-[4vh] z-10 bg-white mb-[2vh]">
-          <div className="flex flex-col items-center flex-grow mx-[2vw] z-10">
-            <h1 className="text-[clamp(2.5rem,3vw,4rem)] font-roboto w-full p-4 rounded bg-[#dbdbdb] mb-[6vh] -rotate-2">
-              My Amazing Work Experience
-            </h1>
-            <p className="text-[clamp(1rem,1.3vw,1.5rem)] font-helvetica p-5 rounded bg-[#dbdbdb] flex flex-col">
-              I have worked at many places, including a few internships. Check out my work experience and see how awesome I am!
-              <br /> <br />
-              <Link to="/jobs">
-                <button className="bg-[#394552] text-white w-full text-[clamp(1rem,1.3vw,1.5rem)] font-roboto p-2 rounded cursor-pointer mt-4">
-                  &gt;&gt;Learn More
-                </button>
-              </Link>
-            </p>
-          </div>
-          <div className="flex flex-col justify-center w-[35%] pl-4">
-            <img src={linkedinPfp} alt="Michael Tahirovic" className="object-contain rounded-2xl w-full" />
-            <div className="w-full h-4 mt-8 bg-black opacity-10 rounded-[100px] shadow" />
-          </div>
-        </div>
-
-        {/* Blog Section */}
-        <div className="flex flex-col items-center w-full min-h-[90vh] bg-[#383f41] pt-0 pb-8 mt-8 relative z-10">
-          <div className="w-full text-center bg-[#474650] mb-12 sticky top-[7vh] z-10">
-            <h1 className="text-3xl text-[#dbdbdb] pb-4 pt-6 font-roboto">Latest Updates</h1>
-          </div>
-          <div className="flex flex-row overflow-x-auto items-center px-4 w-full h-[70vh] min-h-[28rem] gap-6">
-            {[1, 2, 3, 4].map((num) => (
-              <div
-                key={num}
-                className="flex flex-col items-center w-[35%] h-[98%] p-4 bg-[#dbdbdb] rounded-xl mr-6 transition-all duration-200 hover:w-[36%] hover:h-full hover:shadow"
-              >
-                <img src={cbotm} alt="Michael Tahirovic" className="w-full h-[60%] rounded-xl object-cover" />
-                <h1 className="pt-4 pb-1 text-2xl text-[#373737]">My {['First', 'Second', 'Third', 'Fourth'][num - 1]} Post</h1>
-                <p className="text-base font-helvetica pt-2 flex flex-col">
-                  {num === 1
-                    ? 'Welcome to my blog! This is my first post. I hope you enjoy it!'
-                    : `This is my ${['second', 'third', 'fourth'][num - 2]} post. I hope you enjoy it!`}
-                </p>
-                <Link to="/projects" className="w-full mt-auto">
-                  <button className="bg-[#394552] text-white w-full text-lg font-roboto p-2 rounded mt-4 hover:bg-[#445566] transition-all duration-300">
-                    Read More
-                  </button>
-                </Link>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Footer */}
-        <footer className="flex justify-center items-center w-full h-16 bg-[#3a3941] text-[#97a4b1] z-10 mt-8">
-          <div className="text-center">
-            <p className="inline-block align-middle">
-              Copyright <span className="font-bold">Michael Enterprises 2025</span>
-            </p>
-          </div>
-        </footer>
-      </section>
+function Title() {
+  return (
+    <div className="w-full">
+        <h1 className="w-full h-screen bg-black bg-opacity-50 text-5xl md:text-9xl font-bold text-headerFont font-roboto text-center">
+          This is<br />Michael Tahirovic
+        </h1>
     </div>
   );
 }
 
+function CardRight({image, title, description, link}) {
+  return (
+    <div className="flex flex-col md:flex-row items-center justify-center w-screen h-dvh md:h-screen md:min-h-fit max-w-full py-5 md:py-0 z-10 bg-background">
+      {/* Left Side Content */}
+      <div className="flex flex-col justify-evenly flex-grow min-h-fit mx-2vw z-10 px-6 py-3 md:w-1/2 w-full relative">
+        <h1 className="text-3xl md:text-5xl text-center md:text-left font-roboto w-full pb-2 p-4 md:p-4 rounded-t-lg md:rounded md:bg-opacity-0 bg-subContent md:mb-4">
+          {title || 'No Title Provided'}
+        </h1>
+        {/* Mobile Image */}
+        <div className="md:hidden flex w-full h-full justify-end items-center drop-shadow-lg mb-4">
+          <img
+            src={image}
+            alt={title || 'Section image'}
+            className="object-contain object-right w-full max-h-screen rounded-b-lg"
+          />
+        </div>
+        <p className="text-base font-helvetica p-5 rounded md:bg-opacity-0 bg-subContent w-full">
+          {description || 'This is a default description. Please provide a description for this section.'}
+        </p>
+        <Link to={link} className="flex justify-start w-full md:mt-5 hover:md:mt-4 md:px-5 transition-all transition-discrete duration-200">
+          <button className="bg-buttonColor text-white md:w-4/5 hover:md:w-full text-base hover:text-lg font-roboto p-2 rounded cursor-pointer mt-4 hover:bg-buttonHover transition-all transition-discrete duration-200">
+            Learn More
+          </button>
+        </Link>
+      </div>
+      {/* Right Side Image aligned to the right */}
+      <div className="hidden md:flex w-1/2 h-full justify-end items-center">
+        <img
+          src={image}
+          alt={title || 'Section image'}
+          className="object-cover h-full object-right w-full max-h-screen"
+          style={{
+            maskImage: 'linear-gradient(92deg, transparent 0%, black 40%)',
+            WebkitMaskImage: 'linear-gradient(92deg, transparent 0%, black 40%)'
+          }}
+        />
+      </div>
+    </div>
+  );
+}
+
+function CardLeft({image, title, description, link}) {
+  return (
+    <div className="flex flex-col md:flex-row items-center justify-center w-screen h-dhv md:h-screen md:min-h-fit max-w-full py-5 md:py-0 z-10 bg-backgroundAlt sticky">
+      {/* Left Side Image aligned to the left */}
+      <div className="hidden md:flex w-1/2 h-full justify-end items-center">
+        <img
+          src={image}
+          alt={title || 'Section image'}
+          className="object-cover h-full object-left w-full max-h-screen"
+          style={{
+            maskImage: 'linear-gradient(-92deg, transparent 0%, black 40%)',
+            WebkitMaskImage: 'linear-gradient(-92deg, transparent 0%, black 40%)'
+          }}
+        />
+      </div>
+      {/* Right Side Content */}
+      <div className="flex flex-col justify-evenly flex-grow min-h-fit mx-2vw z-10 px-6 py-3 md:w-1/2 w-full relative">
+        <h1 className="text-3xl md:text-5xl text-center md:text-right font-roboto text-defaultFont w-full pb-2 p-4 md:p-4 rounded-t-lg md:rounded md:bg-opacity-0 bg-subContent md:mb-4">
+          {title || 'No Title Provided'}
+        </h1>
+        {/* Mobile Image */}
+        <div className="md:hidden flex w-full h-full justify-end items-center drop-shadow-lg mb-4">
+          <img
+            src={image}
+            alt={title || 'Section image'}
+            className="object-contain object-right w-full max-h-screen rounded-b-lg"
+          />
+        </div>
+        <p className="text-base text-right text-defaultFont font-helvetica p-5 rounded md:bg-opacity-0 bg-subContent w-full">
+          {description || 'This is a default description. Please provide a description for this section.'}
+        </p>
+        <Link to={link} className="flex justify-end w-full md:mt-5 hover:md:mt-4 md:px-5 transition-all transition-discrete duration-200">
+          <button className="bg-buttonColor text-white md:w-4/5 hover:md:w-full text-base hover:text-lg font-roboto p-2 rounded cursor-pointer mt-4 hover:bg-buttonHover transition-all transition-discrete duration-200">
+            Learn More
+          </button>
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+function Socials() {
+  const githubLogo = process.env.PUBLIC_URL + '/media/githubLogo.png';
+  const linkedinLogo = process.env.PUBLIC_URL + '/media/linkedinLogo.png';
+  const instagramLogo = process.env.PUBLIC_URL + '/media/instagramLogo.png';
+  return (
+    <div className="flex flex-col justify-center items-center w-full h-screen bg-white bg-opacity-30 text-white z-20">
+      <h1 className="text-2xl md:text-7xl font-bold font-roboto">Connect with Michael</h1>
+      <div className="w-2/3 h-1 ustify-self-center bg-white my-8"></div>
+      <div className="flex flex-col md:flex-row items-center justify-between w-full px-96">
+        <a href="https://github.com/MichaelTahirovic" className="w-1/3 flex flex-col items-center justify-between bg-buttonColor rounded-3xl p-6 m-2 hover:bg-buttonHover transition-all duration-300">
+          <div className="flex flex-col items-center justify-center size-3/4">
+            <img src={githubLogo} alt="Michael's GitHub Page" className="block mx-auto rounded-full" />
+            <h1 className="text-xl text-white font-roboto mt-3">GitHub</h1>
+          </div>
+        </a>
+        <span className="text-5xl mx-4">|</span>
+        <a href="https://www.linkedin.com/in/michael-tahirovic/" className="w-1/3 flex flex-col items-center justify-between bg-buttonColor rounded-3xl p-6 m-2 hover:bg-buttonHover transition-all duration-300">
+          <div className="flex flex-col items-center justify-center size-3/4">
+            <img src={linkedinLogo} alt="Michael's LinkedIn Page" className="block mx-auto rounded-full" />
+            <h1 className="text-xl font-roboto text-white mt-3">LinkedIn</h1>
+          </div>
+        </a>
+        <span className="text-5xl mx-4">|</span>
+        <a href="https://www.instagram.com/smoltoastyphotos" className="w-1/3 h-fit flex flex-col items-center justify-center align-middle bg-buttonColor rounded-3xl p-6 m-2 hover:bg-buttonHover transition-all duration-300">
+          <div className="flex flex-col items-center justify-center size-3/4">
+            <img src={instagramLogo} alt="Michael's Photography Instagram Page" className="block mx-auto rounded-full" />
+            <h1 className="text-xl font-roboto text-white mt-3">Instagram</h1>
+          </div>
+        </a>
+      </div>
+    </div>
+  );
+}
+
+function Blog() { /* To add in future */
+  const cbotm = process.env.PUBLIC_URL + '/media/cbotm.png';
+  /* Blog Section */
+  return (
+    <div className="flex flex-col items-center w-full min-h-[90vh] bg-[#383f41] pt-0 pb-8 relative z-10">
+      <div className="w-full text-center bg-[#474650] mb-12  top-[7vh] z-10">
+        <h1 className="text-3xl text-[#dbdbdb] pb-4 pt-6 font-roboto">Latest Updates</h1>
+      </div>
+      <div className="flex flex-row overflow-x-auto items-center px-4 w-full h-[70vh] min-h-[28rem] gap-6">
+        {[1, 2, 3, 4].map((num) => (
+          <div
+            key={num}
+            className="flex flex-col items-center w-[35%] h-[98%] p-4 bg-[#dbdbdb] rounded-xl mr-6 transition-all duration-200 hover:w-[36%] hover:h-full hover:shadow"
+          >
+            <img src={cbotm} alt="Michael Tahirovic" className="w-full h-[60%] rounded-xl object-cover" />
+            <h1 className="pt-4 pb-1 text-2xl text-[#373737]">My {['First', 'Second', 'Third', 'Fourth'][num - 1]} Post</h1>
+            <p className="text-base font-helvetica pt-2 flex flex-col">
+              {num === 1
+                ? 'Welcome to my blog! This is my first post. I hope you enjoy it!'
+                : `This is my ${['second', 'third', 'fourth'][num - 2]} post. I hope you enjoy it!`}
+            </p>
+            <Link to="/projects" className="w-full mt-auto">
+              <button className="bg-[#394552] text-white w-full text-lg font-roboto p-2 rounded mt-4 hover:bg-[#445566] transition-all duration-300">
+                Read More
+              </button>
+            </Link>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}

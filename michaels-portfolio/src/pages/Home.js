@@ -97,7 +97,7 @@ function Triangles() {
           />
         </div>
     </div>
-    <div className="relative bottom-0 w-full h-32  bg-gradient-to-b from-headerColor via-headerColor to-white"></div>
+    <div className="relative bottom-0 w-full h-10 md:h-32 bg-gradient-to-b from-headerColor via-headerColor to-white"></div>
   </>
   );
 }
@@ -107,12 +107,12 @@ const CardRight = React.forwardRef(function CardRight({image, title, description
   return (
     <div ref={ref} className="flex flex-col md:flex-row items-center justify-center w-screen h-lvh md:h-screen min-h-fit max-w-full py-5 md:py-0 z-10 bg-background">
       {/* Left Side Content */}
-      <div className="flex flex-col justify-evenly flex-grow min-h-fit mx-2vw z-10 px-6 py-3 md:w-1/2 w-full relative">
+      <div className="flex flex-col justify-center flex-grow min-h-fit mx-2vw z-10 px-6 py-3 md:w-1/2 w-full relative">
         <h1 className="text-3xl md:text-5xl text-center md:text-left font-roboto w-full pb-2 p-4 md:p-4 rounded-t-lg md:rounded md:bg-opacity-0 bg-subContent md:mb-4">
           {title || 'No Title Provided'}
         </h1>
         {/* Mobile Image */}
-        <div className="md:hidden flex w-full h-full justify-end items-center drop-shadow-lg mb-4">
+        <div className="md:hidden flex w-full h-fit justify-end items-center drop-shadow-lg mb-4">
           <img
             src={image}
             alt={title || 'Section image'}
@@ -146,7 +146,7 @@ const CardRight = React.forwardRef(function CardRight({image, title, description
 
 function CardLeft({image, title, description, link}) {
   return (
-    <div className="flex flex-col md:flex-row items-center justify-center w-screen h-lhv md:h-screen md:min-h-fit max-w-full py-5 md:py-0 z-10 bg-backgroundAlt sticky">
+    <div className="flex flex-col md:flex-row items-center justify-center w-screen h-lhv md:h-screen min-h-fit max-w-full py-5 md:py-0 z-10 bg-backgroundAlt sticky">
       {/* Left Side Image aligned to the left */}
       <div className="hidden md:flex w-1/2 h-full justify-end items-center">
         <img
@@ -160,12 +160,12 @@ function CardLeft({image, title, description, link}) {
         />
       </div>
       {/* Right Side Content */}
-      <div className="flex flex-col justify-evenly flex-grow min-h-fit mx-2vw z-10 px-6 py-3 md:w-1/2 w-full relative">
+      <div className="flex flex-col justify-center flex-grow min-h-fit mx-2vw z-10 px-6 py-3 md:w-1/2 w-full relative">
         <h1 className="text-3xl md:text-5xl text-center md:text-right font-roboto text-defaultFont w-full pb-2 p-4 md:p-4 rounded-t-lg md:rounded md:bg-opacity-0 bg-subContent md:mb-4">
           {title || 'No Title Provided'}
         </h1>
         {/* Mobile Image */}
-        <div className="md:hidden flex w-full h-full justify-end items-center drop-shadow-lg mb-4">
+        <div className="md:hidden flex w-full h-fit justify-end items-center drop-shadow-lg mb-4">
           <img
             src={image}
             alt={title || 'Section image'}

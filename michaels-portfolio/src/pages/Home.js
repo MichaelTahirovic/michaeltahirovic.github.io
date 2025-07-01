@@ -67,18 +67,18 @@ function Video() {
 
 function Title({handleScroll}) {
   return (
-    <div className="flex flex-col w-full h-screen items-center justify-end align-middle relative">
-        <div className="fixed inset-0 bg-black bg-opacity-40 items-center justify-center flex flex-col ">
-          <h1 className="w-full text-5xl md:text-8xl font-bold text-headerFont font-roboto text-center ">
+    <div className="flex flex-col w-full h-lvh items-center justify-end align-middle relative bg-black bg-opacity-40">
+        <div className="fixed inset-0 h-fit top-1/4 items-center justify-center flex flex-col ">
+          <h1 className="w-full text-6xl md:text-8xl font-bold text-headerFont font-roboto text-center">
             This is
           </h1>
-          <h1 className="w-full h-1/3 text-5xl md:text-9xl font-bold bg-gradient-to-tr from-teal-100 to-blue-800 bg-clip-text text-transparent font-roboto text-center z-20">
+          <h1 className="w-full h-1/3 text-7xl md:text-9xl font-bold bg-gradient-to-tr from-teal-100 to-blue-800 bg-clip-text text-transparent font-roboto text-center z-20">
             Michael Tahirovic
           </h1>
         </div>
-        <div className="fixed bottom-20 w-full h-1/3 flex flex-col items-center justify-center">
-          <button onClick={handleScroll} className="hidden md:flex flex-col w-1/6 justify-center align-middle inset-0  z-10">
-            <img src={process.env.PUBLIC_URL + '/media/downArrow.svg'} alt="Down Arrow" className="opacity-70 hover:opacity-100 w-1/2 block mt-4 m-auto z-20" />
+        <div className="absolute bottom-1/4 md:bottom-10 w-full h-1/3 hidden lg:flex flex-col items-center justify-center z-10">
+          <button onClick={handleScroll} className="flex flex-col w-1/4 md:w-1/6 justify-center align-middle inset-0  z-10">
+            <img src={process.env.PUBLIC_URL + '/media/downArrow.svg'} alt="Down Arrow" className="opacity-70 hover:opacity-100 w-full md:w-1/2 block mt-4 m-auto z-20" />
           </button>
         </div>
     </div>
@@ -89,7 +89,7 @@ function Triangles() {
   return (
   <>
     <div className="relative w-full h-4 -mt-20 ">
-        <div className="absolute flex justify-between items-end w-full h-full z-10">
+        <div className="absolute flex justify-between items-end w-full h-full">
           <div className="w-0 h-0 border-r-[90vw] border-b-[16vh] border-r-transparent border-b-headerColor"
           />
           <div
@@ -97,7 +97,7 @@ function Triangles() {
           />
         </div>
     </div>
-    <div className="relative bottom-0 w-full h-32  bg-gradient-to-b from-headerColor via-headerColor to-white z-10"></div>
+    <div className="relative bottom-0 w-full h-32  bg-gradient-to-b from-headerColor via-headerColor to-white"></div>
   </>
   );
 }
@@ -105,7 +105,7 @@ function Triangles() {
 
 const CardRight = React.forwardRef(function CardRight({image, title, description, link}, ref) {
   return (
-    <div ref={ref} className="flex flex-col md:flex-row items-center justify-center w-screen h-dvh md:h-screen min-h-fit max-w-full py-5 md:py-0 z-10 bg-background">
+    <div ref={ref} className="flex flex-col md:flex-row items-center justify-center w-screen h-lvh md:h-screen min-h-fit max-w-full py-5 md:py-0 z-10 bg-background">
       {/* Left Side Content */}
       <div className="flex flex-col justify-evenly flex-grow min-h-fit mx-2vw z-10 px-6 py-3 md:w-1/2 w-full relative">
         <h1 className="text-3xl md:text-5xl text-center md:text-left font-roboto w-full pb-2 p-4 md:p-4 rounded-t-lg md:rounded md:bg-opacity-0 bg-subContent md:mb-4">
@@ -133,7 +133,7 @@ const CardRight = React.forwardRef(function CardRight({image, title, description
         <img
           src={image}
           alt={title || 'Section image'}
-          className="object-cover h-full object-right w-full max-h-screen"
+          className="object-cover h-full object-center w-full max-h-screen"
           style={{
             maskImage: 'linear-gradient(92deg, transparent 0%, black 40%)',
             WebkitMaskImage: 'linear-gradient(92deg, transparent 0%, black 40%)'
@@ -146,13 +146,13 @@ const CardRight = React.forwardRef(function CardRight({image, title, description
 
 function CardLeft({image, title, description, link}) {
   return (
-    <div className="flex flex-col md:flex-row items-center justify-center w-screen h-dhv md:h-screen md:min-h-fit max-w-full py-5 md:py-0 z-10 bg-backgroundAlt sticky">
+    <div className="flex flex-col md:flex-row items-center justify-center w-screen h-lhv md:h-screen md:min-h-fit max-w-full py-5 md:py-0 z-10 bg-backgroundAlt sticky">
       {/* Left Side Image aligned to the left */}
       <div className="hidden md:flex w-1/2 h-full justify-end items-center">
         <img
           src={image}
           alt={title || 'Section image'}
-          className="object-cover h-full object-left w-full max-h-screen"
+          className="object-cover h-full object-center w-full max-h-screen"
           style={{
             maskImage: 'linear-gradient(-92deg, transparent 0%, black 40%)',
             WebkitMaskImage: 'linear-gradient(-92deg, transparent 0%, black 40%)'
@@ -190,28 +190,28 @@ function Socials() {
   const linkedinLogo = process.env.PUBLIC_URL + '/media/linkedinLogo.png';
   const instagramLogo = process.env.PUBLIC_URL + '/media/instagramLogo.png';
   return (
-    <div className="flex flex-col justify-center items-center w-full h-screen bg-gradient-to-r from-blue-700 via-purple-600 to-pink-600 text-white z-20">
-      <h1 className="text-2xl md:text-7xl font-bold font-roboto">Connect with Michael</h1>
-      <p className="text-lg md:text-2xl font-helvetica mt-4">Follow me on my social media accounts!</p>
-      <div className="w-2/3 h-1 ustify-self-center bg-white my-8"></div>
-      <div className="flex flex-col md:flex-row items-center justify-between w-full px-96">
-        <a href="https://github.com/MichaelTahirovic" className="w-1/3 flex flex-col items-center justify-between bg-buttonColor rounded-3xl p-6 m-2 hover:bg-buttonHover transition-all duration-300">
+    <div className="flex flex-col justify-center items-left w-full h-fit py-20 md:py-28 px-10 md:px-32 lg:px-60 xl:px-80 bg-gradient-to-r from-blue-700 via-purple-600 to-pink-600 text-white z-20">
+      <h1 className="text-6xl md:text-7xl font-bold font-roboto text-left">Connect with Michael</h1>
+      <p className="text-xl md:text-2xl font-helvetica mt-4 text-left xl:text-center">Follow me on my social media accounts!</p>
+      <div className="w-full h-1 ustify-self-center bg-white my-8"></div>
+      <div className="flex flex-col md:flex-row items-center justify-between w-full">
+        <a href="https://github.com/MichaelTahirovic" className="size-3/4 md:w-1/3 flex flex-col items-center bg-buttonColor bg-opacity-35 hover:bg-opacity-100 rounded-3xl p-6 m-2 hover:bg-buttonHover transition-all duration-300">
           <div className="flex flex-col items-center justify-center size-3/4">
-            <img src={githubLogo} alt="Michael's GitHub Page" className="block mx-auto rounded-full" />
+            <img src={githubLogo} alt="Michael's GitHub Page" className="block rounded-full" />
             <h1 className="text-xl text-white font-roboto mt-3">GitHub</h1>
           </div>
         </a>
-        <span className="text-5xl mx-4">|</span>
-        <a href="https://www.linkedin.com/in/michael-tahirovic/" className="w-1/3 flex flex-col items-center justify-between bg-buttonColor rounded-3xl p-6 m-2 hover:bg-buttonHover transition-all duration-300">
+        <span className="hidden md:block text-5xl mx-4">|</span>
+        <a href="https://www.linkedin.com/in/michael-tahirovic/" className="size-3/4 md:w-1/3 flex flex-col items-center bg-buttonColor bg-opacity-35 hover:bg-opacity-100 rounded-3xl p-6 m-2 hover:bg-buttonHover transition-all duration-300">
           <div className="flex flex-col items-center justify-center size-3/4">
-            <img src={linkedinLogo} alt="Michael's LinkedIn Page" className="block mx-auto rounded-full" />
+            <img src={linkedinLogo} alt="Michael's LinkedIn Page" className="block rounded-full" />
             <h1 className="text-xl font-roboto text-white mt-3">LinkedIn</h1>
           </div>
         </a>
-        <span className="text-5xl mx-4">|</span>
-        <a href="https://www.instagram.com/smoltoastyphotos" className="w-1/3 h-fit flex flex-col items-center justify-center align-middle bg-buttonColor rounded-3xl p-6 m-2 hover:bg-buttonHover transition-all duration-300">
+        <span className="hidden md:block text-5xl mx-4">|</span>
+        <a href="https://www.instagram.com/smoltoastyphotos" className="size-3/4 md:w-1/3 flex flex-col items-center bg-buttonColor bg-opacity-35 hover:bg-opacity-100 rounded-3xl p-6 m-2 hover:bg-buttonHover transition-all duration-300">
           <div className="flex flex-col items-center justify-center size-3/4">
-            <img src={instagramLogo} alt="Michael's Photography Instagram Page" className="block mx-auto rounded-full" />
+            <img src={instagramLogo} alt="Michael's Photography Instagram Page" className="block rounded-full" />
             <h1 className="text-xl font-roboto text-white mt-3">Instagram</h1>
           </div>
         </a>
@@ -220,9 +220,12 @@ function Socials() {
   );
 }
 
-function Blog() { /* To add in future */
+
+
+
+/* To add in future
+function Blog() { 
   const cbotm = process.env.PUBLIC_URL + '/media/cbotm.png';
-  /* Blog Section */
   return (
     <div className="flex flex-col items-center w-full min-h-[90vh] bg-[#383f41] pt-0 pb-8 relative z-10">
       <div className="w-full text-center bg-[#474650] mb-12  top-[7vh] z-10">
@@ -252,3 +255,4 @@ function Blog() { /* To add in future */
     </div>
   );
 }
+*/

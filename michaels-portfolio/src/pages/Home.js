@@ -190,8 +190,9 @@ function Socials() {
   const linkedinLogo = process.env.PUBLIC_URL + '/media/linkedinLogo.png';
   const instagramLogo = process.env.PUBLIC_URL + '/media/instagramLogo.png';
   return (
-    <div className="flex flex-col justify-center items-center w-full h-screen bg-white bg-opacity-30 text-white z-20">
+    <div className="flex flex-col justify-center items-center w-full h-screen bg-gradient-to-r from-blue-700 via-purple-600 to-pink-600 text-white z-20">
       <h1 className="text-2xl md:text-7xl font-bold font-roboto">Connect with Michael</h1>
+      <p className="text-lg md:text-2xl font-helvetica mt-4">Follow me on my social media accounts!</p>
       <div className="w-2/3 h-1 ustify-self-center bg-white my-8"></div>
       <div className="flex flex-col md:flex-row items-center justify-between w-full px-96">
         <a href="https://github.com/MichaelTahirovic" className="w-1/3 flex flex-col items-center justify-between bg-buttonColor rounded-3xl p-6 m-2 hover:bg-buttonHover transition-all duration-300">

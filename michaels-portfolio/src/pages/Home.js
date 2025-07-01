@@ -1,16 +1,25 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
+
 
 export default function Home() {
   // Use process.env.PUBLIC_URL to reference public/media assets
   const linkedinPfp = process.env.PUBLIC_URL + '/media/linkedinPfp.JPG';
   const cbotm = process.env.PUBLIC_URL + '/media/cbotm.png';
 
+  const firstCardRef = useRef(null);
+  function handleScroll() {
+    if (firstCardRef.current) {
+      firstCardRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
   return (
     <div className="flex flex-col items-center">
       <Video />
-      <Title />
-      <CardRight 
+      <Title handleScroll={handleScroll}/>
+      <CardRight
+        ref={firstCardRef}
         image = {linkedinPfp}
         title = "Learn About The Coolest Person Ever"
         description = "As a strong leader and great friend, Michael is a man of many talents. With a passion for learning, he excels at basically everything ever. He loves video games and spending time with his friends. Curently attending Wilfrid Laurier University to learn Business Administration and Computer Science, Michael believes he has many paths to take in his future."
@@ -55,33 +64,46 @@ function Video() {
   );
 }
 
-function Title() {
+function Title({handleScroll}) {
   return (
-    <div className="flex flex-col w-full h-screen items-center justify-end align-middle relative z-10">
-        <div className="absolute inset-0 bg-black bg-opacity-40 items-center justify-center flex">
-          <h1 className="w-full h-1/2 text-5xl md:text-9xl font-bold text-headerFont font-roboto text-center z-20">
-            This is<br />Michael Tahirovic
+    <div className="flex flex-col w-full h-screen items-center justify-end align-middle relative z-30">
+        <div className="absolute inset-0 bg-black bg-opacity-40 items-center justify-center flex flex-col z-10">
+          <h1 className="w-full text-5xl md:text-9xl font-bold text-headerFont font-roboto text-center z-20">
+            This is
+          </h1>
+          <h1 className="w-full h-1/2 text-5xl md:text-9xl font-bold bg-gradient-to-tr from-teal-200 to-blue-500 bg-clip-text text-transparent font-roboto text-center z-20">
+            Michael Tahirovic
           </h1>
         </div>
+        <button onClick={handleScroll} className="hidden md:flex relative flex-col w-1/6 inset-0 mb-24 z-40">
+          <div
+              className="relative px-8 py-4 bg-white bg-opacity-80 rounded-full shadow-lg text-2xl font-bold text-defaultFont font-roboto hover:bg-opacity-100 transition-all duration-200 z-30"
+            >
+            Learn About Me!
+          </div>
+          <img src={process.env.PUBLIC_URL + '/media/downArrow.svg'} alt="Down Arrow" className="relative opacity-80 hover:opacity-100 w-14 h-14 block mt-4 m-auto z-20" />
+        </button>
         <div className="relative w-full h-4">
             <div className="absolute flex justify-between items-end w-full h-full z-10">
               <div
-                className="w-0 h-0 border-r-[40vw] border-b-[25vh] border-r-transparent border-b-white"
-                style={{ borderRightColor: 'transparent', borderBottomColor: '#fff' }}
-              />
+                className="w-0 h-0 border-r-[90vw] border-b-[16vh] border-r-transparent border-b-white"
+                style={{ borderRightColor: 'transparent', borderBottomColor: '#fff' }}>
+              </div>
               <div
-                className="w-0 h-0 border-l-[40vw] border-b-[25vh] border-l-transparent border-b-white"
+                className="w-0 h-0 border-l-[6vw] border-b-[8vh] border-l-transparent border-b-white"
                 style={{ borderLeftColor: 'transparent', borderBottomColor: '#fff' }}
               />
             </div>
-          </div>
+        </div>
+        <div className="relative bottom-0 w-full h-24 bg-white z-10"></div>
     </div>
   );
 }
 
-function CardRight({image, title, description, link}) {
+
+const CardRight = React.forwardRef(function CardRight({image, title, description, link}, ref) {
   return (
-    <div className="flex flex-col md:flex-row items-center justify-center w-screen h-dvh md:h-screen md:min-h-fit max-w-full py-5 md:py-0 z-10 bg-background">
+    <div ref={ref} className="flex flex-col md:flex-row items-center justify-center w-screen h-dvh md:h-screen md:min-h-fit max-w-full py-5 md:py-0 z-10 bg-background">
       {/* Left Side Content */}
       <div className="flex flex-col justify-evenly flex-grow min-h-fit mx-2vw z-10 px-6 py-3 md:w-1/2 w-full relative">
         <h1 className="text-3xl md:text-5xl text-center md:text-left font-roboto w-full pb-2 p-4 md:p-4 rounded-t-lg md:rounded md:bg-opacity-0 bg-subContent md:mb-4">
@@ -118,7 +140,7 @@ function CardRight({image, title, description, link}) {
       </div>
     </div>
   );
-}
+});
 
 function CardLeft({image, title, description, link}) {
   return (

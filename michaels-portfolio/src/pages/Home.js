@@ -50,20 +50,6 @@ function Video() {
           <source src={video} type="video/mp4" />
         </video>
       </div>
-      
-      {/* Triangles I HATE THEM!!!!
-      <div className="relative w-full h-[13vh] flex flex-col">
-        <div className="absolute flex justify-between items-end w-full h-full z-[-1]">
-          <div
-            className="w-0 h-0 border-r-[50vw] border-b-[15vh] border-r-transparent border-b-white"
-            style={{ borderRightColor: 'transparent', borderBottomColor: '#fff' }}
-          />
-          <div
-            className="w-0 h-0 border-l-[50vw] border-b-[15vh] border-l-transparent border-b-white"
-            style={{ borderLeftColor: 'transparent', borderBottomColor: '#fff' }}
-          />
-        </div>
-      </div>*/} 
     </section>
 
   );
@@ -71,10 +57,24 @@ function Video() {
 
 function Title() {
   return (
-    <div className="w-full">
-        <h1 className="w-full h-screen bg-black bg-opacity-50 text-5xl md:text-9xl font-bold text-headerFont font-roboto text-center">
-          This is<br />Michael Tahirovic
-        </h1>
+    <div className="flex flex-col w-full h-screen items-center justify-end align-middle relative z-10">
+        <div className="absolute inset-0 bg-black bg-opacity-40 items-center justify-center flex">
+          <h1 className="w-full h-1/2 text-5xl md:text-9xl font-bold text-headerFont font-roboto text-center z-20">
+            This is<br />Michael Tahirovic
+          </h1>
+        </div>
+        <div className="relative w-full h-4">
+            <div className="absolute flex justify-between items-end w-full h-full z-10">
+              <div
+                className="w-0 h-0 border-r-[40vw] border-b-[25vh] border-r-transparent border-b-white"
+                style={{ borderRightColor: 'transparent', borderBottomColor: '#fff' }}
+              />
+              <div
+                className="w-0 h-0 border-l-[40vw] border-b-[25vh] border-l-transparent border-b-white"
+                style={{ borderLeftColor: 'transparent', borderBottomColor: '#fff' }}
+              />
+            </div>
+          </div>
     </div>
   );
 }

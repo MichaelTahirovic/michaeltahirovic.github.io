@@ -75,8 +75,8 @@ function Title({handleScroll}) {
             Michael Tahirovic
           </h1>
         </div>
-        <div className="fixed bottom-1/4 md:bottom-10 w-full h-1/4 hidden lg:flex flex-col items-center justify-start">
-          <button onClick={handleScroll} className="flex flex-col w-1/4 md:w-1/6 h-1/3 justify-center align-middle inset-0 cursor-pointer text-defaultFont font-roboto bg-white hover:bg-gray-200 rounded-md text-xl md:text-2xl hover:text-3xl transition-all duration-200">
+        <div className="fixed bottom-20 md:bottom-1/4 md:bottom-10 w-full h-1/4 flex flex-col items-center justify-start">
+          <button onClick={handleScroll} className="flex flex-col w-1/2 lg:w-1/4 md:w-1/6 h-1/3 justify-center align-middle inset-0 cursor-pointer text-defaultFont font-roboto bg-white hover:bg-gray-200 rounded-md text-xl md:text-2xl hover:text-3xl transition-all duration-200">
             See More
             {/*<img src={process.env.PUBLIC_URL + '/media/downArrow.svg'} alt="Down Arrow" className="opacity-70 hover:opacity-100 w-full md:w-1/2 block mt-4 m-auto z-20" />*/}
           </button>
@@ -122,7 +122,7 @@ const CardRight = React.forwardRef(function CardRight({image, title, description
         <p className="text-base font-helvetica p-5 rounded md:bg-opacity-0 bg-subContent w-full">
           {description || 'This is a default description. Please provide a description for this section.'}
         </p>
-        <Link to={link} className="flex justify-center md:justify-start w-full md:mt-5 hover:md:mt-4 md:px-5 transition-all transition-discrete duration-200">
+        <Link onClick={() => { window.scrollTo(0, 0); }} to={link} className="flex justify-center md:justify-start w-full md:mt-5 hover:md:mt-4 md:px-5 transition-all transition-discrete duration-200">
           <button className="bg-buttonColor text-white md:w-4/5 hover:md:w-full text-base hover:text-lg font-roboto p-2 rounded cursor-pointer mt-4 hover:bg-buttonHover transition-all transition-discrete duration-200">
             Learn More
           </button>
@@ -175,7 +175,7 @@ function CardLeft({image, title, description, link}) {
         <p className="text-base md:text-right text-defaultFont font-helvetica p-5 rounded md:bg-opacity-0 bg-subContent w-full">
           {description || 'This is a default description. Please provide a description for this section.'}
         </p>
-        <Link to={link} className="flex justify-center md:justify-end w-full md:mt-5 hover:md:mt-4 md:px-5 transition-all transition-discrete duration-200">
+        <Link onClick={() => { window.scrollTo(0, 0); }} to={link} className="flex justify-center md:justify-end w-full md:mt-5 hover:md:mt-4 md:px-5 transition-all transition-discrete duration-200">
           <button className="bg-buttonColor text-white md:w-4/5 hover:md:w-full text-base hover:text-lg font-roboto p-2 rounded cursor-pointer mt-4 hover:bg-buttonHover transition-all transition-discrete duration-200">
             Learn More
           </button>

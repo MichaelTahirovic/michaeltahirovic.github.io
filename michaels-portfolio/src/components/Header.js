@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = React.useState(false);
@@ -31,19 +31,94 @@ export default function Header() {
     };
   }, [menuOpen]);
 
+  // Transition state for the full-screen black swipe
+  const [overlayState, setOverlayState] = React.useState('idle'); // 'idle' | 'in' | 'out'
+  const timeoutsRef = React.useRef([]);
+
+  const IN_MS = 400;
+  const OUT_MS = 400;
+
+  const navigate = useNavigate();
+  const navigateRef = React.useRef(navigate);
+
+  function navigateWithTransition(e, to) {
+    if (e && e.preventDefault) e.preventDefault();
+    setMenuOpen(false);
+
+    // don't double-trigger
+    if (overlayState !== 'idle') return;
+
+    setOverlayState('in');
+
+    const t1 = setTimeout(() => {
+      if (navigateRef.current) {
+        navigateRef.current(to);
+      } else {
+        // fallback - full reload (less ideal)
+        window.location.href = to;
+      }
+
+      // start swipe-out after navigation
+      setOverlayState('out');
+
+      const t2 = setTimeout(() => {
+        setOverlayState('idle');
+      }, OUT_MS);
+      timeoutsRef.current.push(t2);
+    }, IN_MS);
+
+    timeoutsRef.current.push(t1);
+  }
+
+  React.useEffect(() => {
+    return () => {
+      // cleanup timers
+      timeoutsRef.current.forEach((t) => clearTimeout(t));
+      timeoutsRef.current = [];
+    };
+  }, []);
+
+  // Compute overlay classes for sliding/fading
+  const baseOverlay =
+    'fixed top-0 left-0 w-[150vw] h-screen bg-gradient-to-r from-blue-600 to-purple-900 z-40 transition-transform ease-in-out';
+  const overlayClass =
+    overlayState === 'idle'
+      ? `${baseOverlay} -translate-x-[150vw] opacity-0 pointer-events-none`
+      : overlayState === 'in'
+      ? `${baseOverlay} translate-x-0 opacity-100 pointer-events-auto`
+      : `${baseOverlay} translate-x-[100vw] opacity-100 pointer-events-auto`;
+
+  // When overlay has fully slid in, scroll to top.
+  React.useEffect(() => {
+    if (overlayState !== 'in') return;
+    const t = setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, IN_MS);
+    timeoutsRef.current.push(t);
+    return () => clearTimeout(t);
+  }, [overlayState, IN_MS]);
+
   return (
+    <>
     <header className="w-full h-16 bg-headerColor text-headerFont flex justify-between items-center py-2 sticky top-0 z-50">
       <div>
         <h1 className="font-roboto text-3xl pl-4 font-bold">
-          <Link onClick={() => { setMenuOpen((s) => false); window.scrollTo(0, 0); }} to="/">Michael Tahirovic</Link>
+          <Link
+            onClick={(e) => {
+              navigateWithTransition(e, '/');
+            }}
+            to="/"
+          >
+            Michael Tahirovic
+          </Link>
         </h1>
       </div>
 
       {/* Desktop nav */}
       <nav className="hidden md:flex justify-space-between items-center p-1 pr-5 px-1 gap-6">
-        <Link className="text-headerFont hover:text-white" onClick={() => window.scrollTo(0, 0)} to="/about">About Me</Link>
-        <Link className="text-headerFont hover:text-white" onClick={() => window.scrollTo(0, 0)} to="/jobs">Employment</Link>
-        <Link className="text-headerFont hover:text-white" onClick={() => window.scrollTo(0, 0)} to="/projects">Projects</Link>
+        <Link className="text-headerFont hover:text-white" onClick={(e) => navigateWithTransition(e, '/about')} to="/about">About Me</Link>
+        <Link className="text-headerFont hover:text-white" onClick={(e) => navigateWithTransition(e, '/jobs')} to="/jobs">Employment</Link>
+        <Link className="text-headerFont hover:text-white" onClick={(e) => navigateWithTransition(e, '/projects')} to="/projects">Projects</Link>
       </nav>
 
       {/* Mobile menu button + dropdown */}
@@ -70,7 +145,7 @@ export default function Header() {
           >
             <Link
               to="/about"
-              onClick={() => { setMenuOpen(false); window.scrollTo(0, 0); }}
+              onClick={(e) => { navigateWithTransition(e, '/about'); }}
               className="block px-4 py-2 hover:text-white hover:bg-gray-500"
               role="menuitem"
             >
@@ -78,7 +153,7 @@ export default function Header() {
             </Link>
             <Link
               to="/jobs"
-              onClick={() => { setMenuOpen(false); window.scrollTo(0, 0); }}
+              onClick={(e) => { navigateWithTransition(e, '/jobs'); }}
               className="block px-4 py-2 hover:text-white hover:bg-gray-500"
               role="menuitem"
             >
@@ -86,7 +161,7 @@ export default function Header() {
             </Link>
             <Link
               to="/projects"
-              onClick={() => { setMenuOpen(false); window.scrollTo(0, 0); }}
+              onClick={(e) => { navigateWithTransition(e, '/projects'); }}
               className="block px-4 py-2 hover:text-white hover:bg-gray-500"
               role="menuitem"
             >
@@ -96,5 +171,12 @@ export default function Header() {
         )}
       </div>
     </header>
+    {/* Swipe overlay */}
+      <div
+        className={overlayClass}
+        style={{ transitionDuration: `${overlayState === 'idle' ? 0 : overlayState === 'in' ? IN_MS : OUT_MS}ms` }}
+        aria-hidden={overlayState === 'idle'}
+      />
+    </>
   );
 }

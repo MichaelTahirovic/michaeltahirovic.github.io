@@ -75,7 +75,7 @@ function Title({handleScroll}) {
             Michael Tahirovic
           </h1>
         </div>
-        <div className="fixed bottom-20 md:bottom-1/4 md:bottom-10 w-full h-1/4 flex flex-col items-center justify-start">
+        <div className="fixed bottom-20 w-full h-1/4 flex flex-col items-center justify-start">
           <button onClick={handleScroll} className="flex flex-col w-1/2 lg:w-1/4 md:w-1/6 h-1/3 justify-center align-middle inset-0 cursor-pointer text-defaultFont font-roboto bg-white hover:bg-gray-200 rounded-md text-xl md:text-2xl hover:text-3xl transition-all duration-200">
             See More
             {/*<img src={process.env.PUBLIC_URL + '/media/downArrow.svg'} alt="Down Arrow" className="opacity-70 hover:opacity-100 w-full md:w-1/2 block mt-4 m-auto z-20" />*/}

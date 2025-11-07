@@ -28,7 +28,7 @@ function NameCard() {
 
 function MainDescription() {
   return (
-    <div className="relative flex items-center justify-center w-full h-fit md:w-1/2 my-2 md:my-5 overflow-hidden rounded-xl shadow-lg">
+    <div className="relative flex items-center justify-center w-full h-fit md:w-3/4 my-2 md:my-5 overflow-hidden rounded-xl shadow-lg">
       <img src="/media/cbotm.png" alt="BackgoundPic" className="absolute opacity-50 w-full h-full blur-sm object-cover" />
       <div className="relative flex flex-col items-center justify-center bg-black bg-opacity-5 w-full h-full">
         <p className="text-lg text-center text-white p-6">

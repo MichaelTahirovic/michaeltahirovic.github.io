@@ -1,6 +1,12 @@
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 
+// Helper: dispatch navigation event to trigger Header's swipe transition
+function dispatchNavigateWithTransition(e, to) {
+  if (e && e.preventDefault) e.preventDefault();
+  // keep the existing behavior to reset scroll for the next page
+  document.dispatchEvent(new CustomEvent('navigate-with-transition', { detail: { to } }));
+}
 
 export default function Home() {
   // Use process.env.PUBLIC_URL to reference public/media assets
@@ -123,7 +129,7 @@ const CardRight = React.forwardRef(function CardRight({image, title, description
         <p className="text-base font-helvetica p-5 rounded md:bg-opacity-0 bg-subContent w-full">
           {description || 'This is a default description. Please provide a description for this section.'}
         </p>
-        <Link onClick={() => { window.scrollTo(0, 0); }} to={link} className="flex justify-center md:justify-start w-full md:mt-5 hover:md:mt-4 md:px-5 transition-all transition-discrete duration-200">
+        <Link onClick={(e) => dispatchNavigateWithTransition(e, link)} to={link} className="flex justify-center md:justify-start w-full md:mt-5 hover:md:mt-4 md:px-5 transition-all transition-discrete duration-200">
           <button className="bg-buttonColor text-white md:w-4/5 hover:md:w-full text-base hover:text-lg font-roboto p-2 rounded cursor-pointer mt-4 hover:bg-buttonHover transition-all transition-discrete duration-200">
             Learn More
           </button>
@@ -176,7 +182,7 @@ function CardLeft({image, title, description, link}) {
         <p className="text-base md:text-right text-defaultFont font-helvetica p-5 rounded md:bg-opacity-0 bg-subContent w-full">
           {description || 'This is a default description. Please provide a description for this section.'}
         </p>
-        <Link onClick={() => { window.scrollTo(0, 0); }} to={link} className="flex justify-center md:justify-end w-full md:mt-5 hover:md:mt-4 md:px-5 transition-all transition-discrete duration-200">
+        <Link onClick={(e) => dispatchNavigateWithTransition(e, link)} to={link} className="flex justify-center md:justify-end w-full md:mt-5 hover:md:mt-4 md:px-5 transition-all transition-discrete duration-200">
           <button className="bg-buttonColor text-white md:w-4/5 hover:md:w-full text-base hover:text-lg font-roboto p-2 rounded cursor-pointer mt-4 hover:bg-buttonHover transition-all transition-discrete duration-200">
             Learn More
           </button>

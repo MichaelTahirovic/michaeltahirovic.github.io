@@ -40,8 +40,11 @@ export default function Header() {
 
   const navigate = useNavigate();
   const navigateRef = React.useRef(navigate);
+  React.useEffect(() => {
+    navigateRef.current = navigate;
+  }, [navigate]);
 
-  function navigateWithTransition(e, to) {
+  const navigateWithTransition = React.useCallback((e, to) => {
     if (e && e.preventDefault) e.preventDefault();
     setMenuOpen(false);
 
@@ -58,6 +61,7 @@ export default function Header() {
         window.location.href = to;
       }
 
+      window.scrollTo(0, 0);
       // start swipe-out after navigation
       setOverlayState('out');
 
@@ -68,7 +72,23 @@ export default function Header() {
     }, IN_MS);
 
     timeoutsRef.current.push(t1);
-  }
+  }, [overlayState, IN_MS, OUT_MS]);
+
+  // Listen for global navigation events so other components (e.g. Home cards)
+  // can trigger the same swipe transition by dispatching:
+  // document.dispatchEvent(new CustomEvent('navigate-with-transition', { detail: { to: '/somepath' } }));
+  React.useEffect(() => {
+    function handleExternalNavigate(e) {
+      const to = e?.detail?.to;
+      if (to) {
+        navigateWithTransition(null, to);
+      }
+    }
+    document.addEventListener('navigate-with-transition', handleExternalNavigate);
+    return () => {
+      document.removeEventListener('navigate-with-transition', handleExternalNavigate);
+    };
+  }, [navigateWithTransition]);
 
   React.useEffect(() => {
     return () => {
@@ -80,23 +100,13 @@ export default function Header() {
 
   // Compute overlay classes for sliding/fading
   const baseOverlay =
-    'fixed top-0 left-0 w-[150vw] h-screen bg-gradient-to-r from-blue-600 to-purple-900 z-40 transition-transform ease-in-out';
+    'fixed top-0 left-0 w-[150vw] h-[150vh] bg-gradient-to-r from-blue-600 to-purple-900 z-40 transition-transform ease-in-out';
   const overlayClass =
     overlayState === 'idle'
       ? `${baseOverlay} -translate-x-[150vw] opacity-0 pointer-events-none`
       : overlayState === 'in'
       ? `${baseOverlay} translate-x-0 opacity-100 pointer-events-auto`
       : `${baseOverlay} translate-x-[100vw] opacity-100 pointer-events-auto`;
-
-  // When overlay has fully slid in, scroll to top.
-  React.useEffect(() => {
-    if (overlayState !== 'in') return;
-    const t = setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, IN_MS);
-    timeoutsRef.current.push(t);
-    return () => clearTimeout(t);
-  }, [overlayState, IN_MS]);
 
   return (
     <>

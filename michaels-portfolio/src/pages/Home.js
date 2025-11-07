@@ -51,8 +51,9 @@ function Video() {
       <div className="inset-0">
         <video
           className="w-full object-cover fixed"
-          autoPlay
+          controls={false}
           muted
+          autoPlay
           loop
           poster={thumbnail}
         >

@@ -2,7 +2,8 @@ import OsScreen from "./_computerScreen/osScreen";
 
 export default function Home() {
   return (
-    <div className="flex">
+    // Computer
+    <div className="flex w-screen h-screen">
       < OsScreen/>
     </div>
   );

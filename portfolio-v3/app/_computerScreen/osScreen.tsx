@@ -14,7 +14,11 @@ const iconCompactor = getCompactor(null, false, true);
 // 2. Tab Grid Compactor: fluid, allows free overlap, tabs don't push each other
 const tabCompactor = getCompactor(null, true, false);
 
-export default function OsScreen() {
+export default function OsScreen({
+  onEscape,
+}: {
+  onEscape?: () => void;
+}) {
   const { width, containerRef, mounted } = useContainerWidth();
 
   // Desktop icon grid sizing (~100px cells)
@@ -103,7 +107,7 @@ export default function OsScreen() {
                 </div>
                 <div key="c">
                   <AppIcon
-                    onAction={() => {openAppFromIcon("tab-3"); console.log(openTabs)}}
+                    onAction={() => {openAppFromIcon("tab-3")}}
                     source="/media/folderIcon.png"
                     appName="Yet Another App"
                   />
@@ -211,7 +215,7 @@ export default function OsScreen() {
           </>
         )}
       </div>
-      <Dock />
+      <Dock onAction={onEscape} />
     </div>
   );
 }

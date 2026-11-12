@@ -215,7 +215,7 @@ export default function OsScreen({
           </>
         )}
       </div>
-      <Dock onAction={onEscape} />
+      <Dock />
     </div>
   );
 }

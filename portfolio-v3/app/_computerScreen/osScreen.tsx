@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Folder from "./folder";
 import Dock from "./dock";
 import AppIcon from "./components/appIcon";
@@ -36,6 +36,21 @@ export default function OsScreen({
     { i: "c", x: 0, y: 2, w: 1, h: 1, isResizable: false, isBounded: true },
   ];
 
+  // Limit height of container such that icons can't go behind dock
+  const [ containerHeight, setContainerHeight ] = useState(0);
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const update = () =>
+      setContainerHeight(el.clientHeight);
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [containerRef]);
+  const iconMaxRows = containerHeight > 0 ? Math.max(1, Math.floor((containerHeight - 10) / 110)) : 6;
+
+
   // Layer 2: Open tabs layout
   const tabsInitLayout = [
     { i: "tab-1", x: 2, y: 0, w: 22, h: 16, minW: 12, minH: 8, isBounded: true },
@@ -52,12 +67,13 @@ export default function OsScreen({
 
   // Track z-index so the most recently clicked/opened tab jumps to the front
   const [activeZ, setActiveZ] = useState<Record<string, number>>({
-    'tab-1': 10,
-    'tab-2': 11,
-    'tab-3': 12,
+    'tab-1': 2,
+    'tab-2': 3,
+    'tab-3': 4,
   });
-  const [topZ, setTopZ] = useState(13);
 
+  // Bring tab to front of all other tabs when clicked on
+  const [topZ, setTopZ] = useState(5);
   const bringToFront = (id: string) => {
     setTopZ((prev) => {
       const next = prev + 1;
@@ -79,8 +95,8 @@ export default function OsScreen({
   };
 
   return (
-    <div className="relative flex flex-col flex-1 w-100% h-100% bg-green-100 overflow-hidden select-none">
-      <div ref={containerRef} className="relative w-full h-full flex-1">
+    <div className="relative flex flex-col flex-1 w-full h-full bg-green-100 overflow-hidden select-none">
+      <div ref={containerRef} className="relative w-full mb-20 flex-1">
         {mounted && (
           <>
             {/* ================= LAYER 1: APP ICONS GRID ================= */}
@@ -89,7 +105,7 @@ export default function OsScreen({
                 layout={appInitLayout}
                 width={width}
                 compactor={iconCompactor}
-                gridConfig={{ cols: iconCols, rowHeight: 100 }}
+                gridConfig={{ cols: iconCols, rowHeight: 100, maxRows: iconMaxRows }}
               >
                 <div key="a">
                   <AppIcon
@@ -130,7 +146,7 @@ export default function OsScreen({
                 {/* Tab 1 */}
                   <div
                     key="tab-1"
-                    style={{ zIndex: activeZ["tab-1"] ?? 10 }}
+                    style={{ zIndex: activeZ["tab-1"] ?? 2 }}
                     onMouseDown={() => bringToFront("tab-1")}
                     className={`pointer-events-auto flex-col bg-white rounded-xl shadow-2xl border border-zinc-200 overflow-hidden ${
                       openTabs['tab-1'] ? 'flex' : 'hidden'
@@ -156,7 +172,7 @@ export default function OsScreen({
                 {/* Tab 2 */}
                   <div
                     key="tab-2"
-                    style={{ zIndex: activeZ["tab-2"] ?? 10 }}
+                    style={{ zIndex: activeZ["tab-2"] ?? 2 }}
                     onMouseDown={() => bringToFront("tab-2")}
                   className={`pointer-events-auto flex-col bg-white rounded-xl shadow-2xl border border-zinc-200 overflow-hidden ${
                       openTabs['tab-2'] ? 'flex' : 'hidden'
@@ -187,7 +203,7 @@ export default function OsScreen({
                 {/* Tab 3 */}
                   <div
                     key="tab-3"
-                    style={{ zIndex: activeZ["tab-3"] ?? 10 }}
+                    style={{ zIndex: activeZ["tab-3"] ?? 2 }}
                     onMouseDown={() => bringToFront("tab-3")}
                     className={`pointer-events-auto flex-col bg-white rounded-xl shadow-2xl border border-zinc-200 overflow-hidden ${
                       openTabs['tab-3'] ? 'flex' : 'hidden'

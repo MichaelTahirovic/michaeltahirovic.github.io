@@ -15,9 +15,9 @@ const iconCompactor = getCompactor(null, false, true);
 const tabCompactor = getCompactor(null, true, false);
 
 export default function OsScreen({
-  onEscape,
+  onMatrixEscape,
 }: {
-  onEscape?: () => void;
+  onMatrixEscape?: () => void;
 }) {
   const { width, containerRef, mounted } = useContainerWidth();
 
@@ -215,7 +215,7 @@ export default function OsScreen({
           </>
         )}
       </div>
-      <Dock />
+      <Dock onMatrixEscape={onMatrixEscape} />
     </div>
   );
 }

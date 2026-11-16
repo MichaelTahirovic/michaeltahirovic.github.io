@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Folder from "./folder";
+import Tab from "./components/tab";
 import Dock from "./dock";
 import AppIcon from "./components/appIcon";
 import ReactGridLayout, { getCompactor, useContainerWidth } from "react-grid-layout";
@@ -53,9 +53,9 @@ export default function OsScreen({
 
   // Layer 2: Open tabs layout
   const tabsInitLayout = [
-    { i: "tab-1", x: 2, y: 0, w: 22, h: 16, minW: 12, minH: 8, isBounded: true },
-    { i: "tab-2", x: 3, y: 0, w: 22, h: 16, minW: 12, minH: 8, isBounded: true },
-    { i: "tab-3", x: 4, y: 0, w: 22, h: 16, minW: 12, minH: 8, isBounded: true },
+    { i: "tab-1", x: 18, y: 2, w: 30, h: 16, minW: 12, minH: 8, isBounded: true },
+    { i: "tab-2", x: 19, y: 3, w: 30, h: 16, minW: 12, minH: 8, isBounded: true },
+    { i: "tab-3", x: 20, y: 4, w: 30, h: 16, minW: 12, minH: 8, isBounded: true },
   ];
 
   // Track visibility of each tab window
@@ -144,94 +144,94 @@ export default function OsScreen({
                 }}
               >
                 {/* Tab 1 */}
-                  <div
-                    key="tab-1"
-                    style={{ zIndex: activeZ["tab-1"] ?? 2 }}
-                    onMouseDown={() => bringToFront("tab-1")}
-                    className={`pointer-events-auto flex-col bg-white rounded-xl shadow-2xl border border-zinc-200 overflow-hidden ${
-                      openTabs['tab-1'] ? 'flex' : 'hidden'
-                    }`}                  >
-                    <div className="flex items-center justify-between px-3 py-2 bg-zinc-100 border-b border-zinc-200 cursor-move">
-                      <div className="flex items-center gap-1.5">
-                        <button
-                          onClick={(e) => closeTab("tab-1", e)}
-                          className="w-3 h-3 rounded-full bg-red-400 hover:bg-red-500 transition-colors"
-                          title="Close"
-                        />
-                        <span className="w-3 h-3 rounded-full bg-yellow-400" />
-                        <span className="w-3 h-3 rounded-full bg-green-400" />
-                      </div>
-                      <span className="text-xs font-medium text-zinc-600">Test App — Projects</span>
-                      <div className="w-10" />
-                    </div>
-                    <div className="flex-1 p-4 overflow-auto bg-white">
-                      <Folder />
-                    </div>
-                  </div>
+                <div
+                  key="tab-1"
+                  style={{ zIndex: activeZ["tab-1"] ?? 2 }}
+                  onMouseDown={() => bringToFront("tab-1")}
+                  className={openTabs["tab-1"] ? "pointer-events-auto" : "pointer-events-none"}
+                >
+                  <Tab
+                    tabName="tab-1"
+                    title="Test App - About Me"
+                    activeZ={activeZ}
+                    openTabs={openTabs}
+                    bringToFront={bringToFront}
+                    closeTab={closeTab}
+                    >
+                    <AboutMePage/>
+                  </Tab>
+                </div>
 
                 {/* Tab 2 */}
-                  <div
-                    key="tab-2"
-                    style={{ zIndex: activeZ["tab-2"] ?? 2 }}
-                    onMouseDown={() => bringToFront("tab-2")}
-                  className={`pointer-events-auto flex-col bg-white rounded-xl shadow-2xl border border-zinc-200 overflow-hidden ${
-                      openTabs['tab-2'] ? 'flex' : 'hidden'
-                    }`}
+                <div
+                  key="tab-2"
+                  style={{ zIndex: activeZ["tab-2"] ?? 2 }}
+                  onMouseDown={() => bringToFront("tab-2")}
+                  className={openTabs["tab-2"] ? "pointer-events-auto" : "pointer-events-none"}
+                >
+                  <Tab
+                    tabName="tab-2"
+                    title="Test App - Projects"
+                    activeZ={activeZ}
+                    openTabs={openTabs}
+                    bringToFront={bringToFront}
+                    closeTab={closeTab}
                     >
-                    <div className="flex items-center justify-between px-3 py-2 bg-zinc-100 border-b border-zinc-200 cursor-move">
-                      <div className="flex items-center gap-1.5">
-                        <button
-                          onClick={(e) => closeTab("tab-2", e)}
-                          className="w-3 h-3 rounded-full bg-red-400 hover:bg-red-500 transition-colors"
-                          title="Close"
-                        />
-                        <span className="w-3 h-3 rounded-full bg-yellow-400" />
-                        <span className="w-3 h-3 rounded-full bg-green-400" />
-                      </div>
-                      <span className="text-xs font-medium text-zinc-600">Another App — About Me</span>
-                      <div className="w-10" />
-                    </div>
-                    <div className="flex-1 p-4 overflow-auto bg-zinc-50 flex items-center justify-center">
-                      <img
-                        src="/media/mike.jpeg"
-                        alt="Mike"
-                        className="max-h-full rounded-lg shadow-sm object-contain"
-                      />
-                    </div>
-                  </div>
+                      {/* Put folder content here */}
+                    </Tab>
+                </div>
 
                 {/* Tab 3 */}
                   <div
-                    key="tab-3"
-                    style={{ zIndex: activeZ["tab-3"] ?? 2 }}
-                    onMouseDown={() => bringToFront("tab-3")}
-                    className={`pointer-events-auto flex-col bg-white rounded-xl shadow-2xl border border-zinc-200 overflow-hidden ${
-                      openTabs['tab-3'] ? 'flex' : 'hidden'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between px-3 py-2 bg-zinc-100 border-b border-zinc-200 cursor-move">
-                      <div className="flex items-center gap-1.5">
-                        <button
-                          onClick={(e) => closeTab("tab-3", e)}
-                          className="w-3 h-3 rounded-full bg-red-400 hover:bg-red-500 transition-colors"
-                          title="Close"
-                        />
-                        <span className="w-3 h-3 rounded-full bg-yellow-400" />
-                        <span className="w-3 h-3 rounded-full bg-green-400" />
-                      </div>
-                      <span className="text-xs font-medium text-zinc-600">Yet Another App</span>
-                      <div className="w-10" />
-                    </div>
-                    <div className="flex-1 p-4 overflow-auto bg-white flex items-center justify-center text-zinc-400 text-sm">
-                      Empty Window
-                    </div>
-                  </div>
+                  key="tab-3"
+                  style={{ zIndex: activeZ["tab-3"] ?? 2 }}
+                  onMouseDown={() => bringToFront("tab-3")}
+                  className={openTabs["tab-3"] ? "pointer-events-auto" : "pointer-events-none"}
+                >
+                  <Tab
+                    tabName="tab-3"
+                    title="Test App - Employment"
+                    activeZ={activeZ}
+                    openTabs={openTabs}
+                    bringToFront={bringToFront}
+                    closeTab={closeTab}
+                    >
+                      {/* Put folder content here */}
+                    </Tab>
+                </div>
               </ReactGridLayout>
             </div>
           </>
         )}
       </div>
       <Dock onMatrixEscape={onMatrixEscape} />
+    </div>
+  );
+}
+
+// ================== TAB CONTENTS =====================
+// (Move to separate files later)
+
+// About Me Page
+function AboutMePage(){
+  return (
+    <div className="flex flex-row">
+      <img
+          src="/media/mike.jpeg"
+          alt="Mike"
+          className="max-h-full w-[50%] self-start rounded-lg shadow-sm object-contain"
+        />
+      <div className="flex flex-col p-4">
+        <h1 className="text-3xl text-black font-bold ">Wait... it's HIM</h1>
+        <h2 className="text-base text-black italic">That's right, it's Michael T.</h2>
+        <p className="text-sm text-black">Yup, you heard it here first folks. This is the website
+          of Michael Tahirovic. Sturdy Mike. Mikey T. The Man. You'll find
+          a bunch of cool things here that he's done, and a bunch more
+          that he's gonna do, plus the stuff that he does in the future but 
+          when it's done it won't be the future and it will be on here instead.
+          I hope you enjoy.
+        </p>
+      </div>
     </div>
   );
 }

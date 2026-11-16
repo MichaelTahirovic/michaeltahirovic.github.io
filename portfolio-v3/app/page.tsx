@@ -130,12 +130,14 @@ export default function Home() {
                 <div className="relative flex flex-col justify-content w-[50vw] h-[175vh] bg-blue-500/50 z-0"/>
                 <div className="flex flex-col justify-content h-[175vh] w-[100vw] bg-gray-500/50 z-0">
                   {/* Computer screen container */}
-                  <img src="/media/crtMonitor.png" className={`absolute self-center mt-[18vh] transition-all ease-in-out duration-300 ${isZoomedOut ? "w-645 z-2" : "w-980 h-500 mt-[36vh]"} `}></img>
-                  <div
-                    style={{ filter: "url(#crt-curve)" }}
-                    className={`flex self-center self-justify h-[100vh] overflow-hidden rounded-[2rem] transition-all ease-in-out duration-300 ${isZoomedOut ? "w-[68vw] mt-[30vh] mr-10" : "w-[100vw] mt-[50vh] z-1"}`}
-                  >
-                    <OsScreen onMatrixEscape={handleEscape}/>
+                  <div className={`relative self-center transition-all ease-in-out duration-300 ${isZoomedOut ? "w-[80vw] h-[100vh] mt-[36vh] z-2" : "w-[150vw] h-[152vh] mt-[36vh] ml-[2vw]"}`}>
+                    <div
+                      style={{ filter: "url(#crt-curve)" }}
+                      className={`absolute self-center overflow-hidden rounded-[2rem] transition-all ease-in-out duration-300 ${isZoomedOut ? "h-[73%] w-[71%] top-[5%] left-[13.5%] aspect-[4/3]" : "w-[64.4%] h-[66%] left-[17%] top-[9%]"}`}
+                    >
+                      <OsScreen onMatrixEscape={handleEscape}/>
+                    </div>
+                    <img src="/media/crtMonitor.png" className={`relative self-center w-[100%] h-[100%]`}/>
                   </div>
                 </div>
                 <div className="relative w-[50vw] h-[175vh] bg-yellow-500/50 z-0" />

@@ -133,7 +133,7 @@ export default function Home() {
                   <div className={`relative self-center transition-all ease-in-out duration-300 ${isZoomedOut ? "w-[80%] h-[70%%] mt-[36vh] aspect-[4/3] z-2" : "w-[150vw] h-[152vh] mt-[36vh] ml-[2vw]"}`}>
                     <div
                       style={{ filter: "url(#crt-curve)" }}
-                      className={`absolute self-center overflow-hidden rounded-[2rem] transition-all ease-in-out duration-300 ${isZoomedOut ? "h-[73%] w-[71%] top-[5%] left-[13.5%]" : "w-[64.4%] h-[66%] left-[17%] top-[9%]"}`}
+                      className={`absolute self-center overflow-hidden rounded-[2rem] ${isZoomedOut ? "h-[73%] w-[71%] top-[5%] left-[13.5%]" : "w-[64.4%] h-[66%] left-[17%] top-[9%]"}`}
                     >
                       <OsScreen onMatrixEscape={handleEscape}/>
                     </div>

@@ -10,16 +10,18 @@ export default function AppIcon({
   onAction?: (data?: string) => void;
 }) {
   const handleClick = () => {
-    //onAction?.("AppIcon clicked: " + appName);
+    onAction?.("AppIcon clicked: " + appName);
+    console.log("App clicked", appName)
+
   };
-  const handleDoubleClick = () => {
+  {/* const handleDoubleClick = () => {
     onAction?.("AppIcon double-clicked:" + appName);
-    console.log("Double clicked", appName)
-  };
+    console.log("App double clicked", appName)
+  }; */}
   return (
     <button
       onClick={handleClick}
-      onDoubleClick={handleDoubleClick}
+      //onDoubleClick={handleDoubleClick}
       className="flex flex-col w-22 h-fit m-3 pb-2 items-center hover:bg-blue-500/30 hover:cursor-pointer rounded-lg"
     >
       <img src={source} className="w-16 h-16 pointer-events-none select-none" />

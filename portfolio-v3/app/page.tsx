@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, Component } from "react";
+import { useState, useEffect, useRef, Component } from "react";
 import { TransformWrapper, TransformComponent, useControls } from "react-zoom-pan-pinch";
 import OsScreen from "./_computerScreen/osScreen";
 
@@ -107,6 +107,43 @@ export default function Home() {
   // Handler for escaping matrix
   const [isZoomedOut, setIsZoomedOut] = useState(false);
   const [zoomScale, setZoomScale] = useState(1);
+  const [crtScale, setCrtScale] = useState(20);
+  const crtScaleRef = useRef(20);
+  const didMountCrtRef = useRef(false);
+
+  useEffect(() => {
+    if (!didMountCrtRef.current) {
+      didMountCrtRef.current = true;
+      return;
+    }
+
+    const target = isZoomedOut ? 60 : 20;
+    const start = crtScaleRef.current;
+    const delay = isZoomedOut ? 0 : 400;
+    const duration = 350;
+    let rafId = 0;
+
+    const timeoutId = window.setTimeout(() => {
+      const startTime = performance.now();
+      const step = (now: number) => {
+        const t = Math.min(1, (now - startTime) / duration);
+        const eased = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+        const next = start + (target - start) * eased;
+        crtScaleRef.current = next;
+        setCrtScale(next);
+        if (t < 1) {
+          rafId = window.requestAnimationFrame(step);
+        }
+      };
+      rafId = window.requestAnimationFrame(step);
+    }, delay);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+      if (rafId) window.cancelAnimationFrame(rafId);
+    };
+  }, [isZoomedOut]);
+
   const handleEscape = () => {
     console.log("Escaping matrix, zooming out.");
     setIsZoomedOut((prev) => !prev);
@@ -114,7 +151,7 @@ export default function Home() {
 
   return (
     <>
-      <CrtSvgFilter scale={isZoomedOut ? 60 : 20} />
+      <CrtSvgFilter scale={crtScale} />
       <TransformWrapper
         initialScale={1}
         minScale={0.5}
@@ -136,12 +173,12 @@ export default function Home() {
                 <img src="media/highResWood.png" className="w-full h-full"/>
               </div>
               <TransformComponent>
-                <div className={`flex flex-col justify-center h-[100vh] w-[100vw] z-[100] ${isZoomedOut ? "bg-gray-500/0" :"bg-gray-700"}`}>
+                <div className={`flex flex-col items-center justify-center h-[100vh] w-[100vw] z-[100] transition-colors duration-300 ease-in-out ${isZoomedOut ? "delay-50 bg-gray-700/0" : "delay-600 bg-gray-700"}`}>
                   {/* Computer screen container */}
-                  <div className={`relative transition-all ease-in-out duration-300 ${isZoomedOut ? "w-[90%] aspect-[4/3] z-2 left-[5%] top-[-15%]" : "w-[100vw] h-[100vh]"}`}>
+                  <div className={`relative transition-all duration-[350ms] ease-in-out ${isZoomedOut ? "delay-0 w-[min(110vw,140vh)] h-[min(87.5vw,110vh)] -translate-y-[8vh] z-2" : "delay-400 w-[100vw] h-[100vh] translate-y-0"}`}>
                     <div
                       style={{ filter: "url(#crt-curve)" }}
-                      className={`absolute overflow-hidden transition-all ease-in-out duration-300 ${isZoomedOut ? "h-[68%] w-[66.5%] top-[8%] left-[16%]" : "w-[99%] h-[99%] left-[0.5%] rounded-[2rem]"}`}
+                      className={`absolute overflow-hidden transition-all duration-[350ms] ease-in-out ${isZoomedOut ? "delay-0 w-[67.5%] h-[68%] top-[8%] left-[15.5%] rounded-0" : "delay-400 w-[99%] h-[99%] top-[0.5%] left-[0.5%] rounded-[2rem]"}`}
                     >
                       <OsScreen
                         onMatrixEscape={handleEscape}
@@ -151,7 +188,15 @@ export default function Home() {
                     </div>
                     <img
                       src="/media/crtMonitor.png"
-                      className={`pointer-events-none select-none relative w-[100%] h-[100%] ${isZoomedOut ? "opacity-100" : "opacity-0"}`}
+                      style={{
+                        transitionProperty: "transform, opacity, scale, top",
+                        transitionDuration: "300ms, 300ms, 350ms, 350ms",
+                        transitionTimingFunction: "ease-in-out",
+                        transitionDelay: isZoomedOut ? "0ms, 10ms, 0ms, 0ms" : "600ms, 800ms, 400ms, 400ms",
+                      }}
+                      className={`pointer-events-none select-none relative w-full h-full origin-[49%_42%] ${
+                        isZoomedOut ? "scale-100 opacity-100 top-0" : "scale-[1.5] opacity-0 top-15"
+                      }`}
                     />
                   </div>
                 </div>

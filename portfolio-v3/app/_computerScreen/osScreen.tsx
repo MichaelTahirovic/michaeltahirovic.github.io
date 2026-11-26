@@ -16,7 +16,40 @@ const iconCompactor = getCompactor(null, false, true);
 // 2. Tab Grid Compactor: fluid, allows free overlap, tabs don't push each other
 const tabCompactor = getCompactor(null, true, false);
 
+const ICON_CELL_WIDTH = 100;
 const FLUID_STEP = 20;
+
+const APP_INIT_LAYOUT: Layout = [
+  { i: "a", x: 0, y: 0, w: 1, h: 1, isResizable: false, isBounded: true },
+  { i: "b", x: 0, y: 1, w: 1, h: 1, isResizable: false, isBounded: true },
+  { i: "c", x: 0, y: 2, w: 1, h: 1, isResizable: false, isBounded: true },
+];
+
+const clampIconsToGrid = (layout: Layout, maxCols: number, maxRows: number): Layout => {
+  const cols = Math.max(1, maxCols);
+  const rows = Math.max(1, maxRows);
+  const occupied = new Set<string>();
+
+  return layout.map((item) => {
+    let x = Math.min(Math.max(0, item.x), cols - 1);
+    let y = Math.min(Math.max(0, item.y), rows - 1);
+
+    if (occupied.has(`${x},${y}`)) {
+      outer: for (let cx = 0; cx < cols; cx++) {
+        for (let cy = 0; cy < rows; cy++) {
+          if (!occupied.has(`${cx},${cy}`)) {
+            x = cx;
+            y = cy;
+            break outer;
+          }
+        }
+      }
+    }
+
+    occupied.add(`${x},${y}`);
+    return { ...item, x, y };
+  });
+};
 
 const TABS_INIT_LAYOUT: Layout = [
   { i: "tab-1", x: 18, y: 2, w: 30, h: 16, minW: 12, minH: 8, isBounded: true },
@@ -80,18 +113,14 @@ export default function OsScreen({
   };
 
   // Desktop icon grid sizing (~100px cells)
-  const ICON_CELL_WIDTH = 100;
   const iconCols = Math.max(1, Math.floor(width / ICON_CELL_WIDTH));
 
   // Fluid window/tab grid sizing (~20px small step for smooth, free placement)
   const fluidCols = Math.max(1, Math.floor(width / FLUID_STEP));
 
   // Layer 1: App icon layout
-  const appInitLayout = [
-    { i: "a", x: 0, y: 0, w: 1, h: 1, isResizable: false, isBounded: true },
-    { i: "b", x: 0, y: 1, w: 1, h: 1, isResizable: false, isBounded: true },
-    { i: "c", x: 0, y: 2, w: 1, h: 1, isResizable: false, isBounded: true },
-  ];
+  const [appLayout, setAppLayout] = useState<Layout>(APP_INIT_LAYOUT);
+  const savedZoomedInAppLayoutRef = useRef<Layout | null>(null);
 
   // Limit height of container such that icons can't go behind dock
   const [ containerHeight, setContainerHeight ] = useState(0);
@@ -107,6 +136,23 @@ export default function OsScreen({
   }, [containerRef]);
   const iconMaxRows = containerHeight > 0 ? Math.max(1, Math.floor((containerHeight - 10) / 110)) : 6;
 
+
+  const iconConstraints = useMemo<LayoutConstraint[]>(() => {
+    const maxX = Math.max(0, iconCols - 1);
+    const maxY = Math.max(0, iconMaxRows - 1);
+
+    const keepIconsInScreen: LayoutConstraint = {
+      name: "keepIconsInScreen",
+      constrainPosition(_item, x, y) {
+        return {
+          x: Math.min(Math.max(0, x), maxX),
+          y: Math.min(Math.max(0, y), maxY),
+        };
+      },
+    };
+
+    return [gridBounds, minMaxSize, keepIconsInScreen];
+  }, [iconCols, iconMaxRows]);
 
   const tabConstraints = useMemo<LayoutConstraint[]>(() => {
     // Each fluid row is rowHeight (20) + default vertical margin (10) = 30px; top margin is 10px.
@@ -143,10 +189,35 @@ export default function OsScreen({
         savedZoomedInLayoutRef.current = current;
         return current.map((item) => toZoomedOutItem(item, width));
       });
-    } else if (savedZoomedInLayoutRef.current) {
-      setTabsLayout(savedZoomedInLayoutRef.current);
+      setAppLayout((current) => {
+        savedZoomedInAppLayoutRef.current = current;
+        const targetIconCols = Math.max(1, Math.floor((width * 0.53) / ICON_CELL_WIDTH));
+        const targetIconRows = Math.max(
+          1,
+          Math.floor(((containerHeight > 0 ? containerHeight * 0.68 : 400) - 10) / 110)
+        );
+        return clampIconsToGrid(current, targetIconCols, targetIconRows);
+      });
+    } else {
+      if (savedZoomedInLayoutRef.current) {
+        setTabsLayout(savedZoomedInLayoutRef.current);
+      }
+      if (savedZoomedInAppLayoutRef.current) {
+        setAppLayout(savedZoomedInAppLayoutRef.current);
+      }
     }
-  }, [isZoomedOut, width]);
+  }, [isZoomedOut, width, containerHeight]);
+
+  useEffect(() => {
+    if (!isZoomedOut) return;
+    setAppLayout((current) => {
+      const clamped = clampIconsToGrid(current, iconCols, iconMaxRows);
+      const changed = clamped.some(
+        (item, idx) => item.x !== current[idx]?.x || item.y !== current[idx]?.y
+      );
+      return changed ? clamped : current;
+    });
+  }, [isZoomedOut, iconCols, iconMaxRows]);
 
   // Track visibility of each tab window
   const [openTabs, setOpenTabs] = useState<Record<string, boolean>>({
@@ -173,7 +244,9 @@ export default function OsScreen({
   };
 
   // Open the tab when the corresponding icon is clicked and reset it to its default position
+  const didDragIconRef = useRef(false);
   const openAppFromIcon = (tabId: string) => {
+    if (didDragIconRef.current) return;
     setOpenTabs((prev) => ({ ...prev, [tabId]: true }));
     const defaultItem = TABS_INIT_LAYOUT.find((item) => item.i === tabId);
     if (defaultItem) {
@@ -211,11 +284,23 @@ export default function OsScreen({
             {/* ================= LAYER 1: APP ICONS GRID ================= */}
             <div className="absolute inset-0 z-0">
               <ReactGridLayout
-                layout={appInitLayout}
+                layout={appLayout}
+                onLayoutChange={(newLayout) => setAppLayout(newLayout)}
                 width={width}
                 compactor={iconCompactor}
                 positionStrategy={positionStrategy}
+                constraints={iconConstraints}
                 gridConfig={{ cols: iconCols, rowHeight: 100, maxRows: iconMaxRows }}
+                onDrag={() => {
+                  didDragIconRef.current = true;
+                }}
+                onDragStop={() => {
+                  if (didDragIconRef.current) {
+                    setTimeout(() => {
+                      didDragIconRef.current = false;
+                    }, 0);
+                  }
+                }}
               >
                 <div key="a">
                   <AppIcon

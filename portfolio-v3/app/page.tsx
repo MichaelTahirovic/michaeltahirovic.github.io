@@ -128,12 +128,16 @@ export default function Home() {
         }
         >  
           {/* page container (must have for zoom to work) */}
-          <div className="absolute flex flex-row justify-center w-[200vw] h-[200vh] bg-green-600">
+          <div className="absolute flex flex-row justify-center w-[100vw] h-[100vh] bg-blue-800">
             <div>
+              {/* Desk */}
+              <div className="absolute bottom-0 w-full h-[40vh]">
+                <img src="media/highResWood.png" className="w-full h-full"/>
+              </div>
               <TransformComponent>
-                <div className="flex flex-col justify-center h-[175vh] w-[100vw] bg-gray-500 z-0">
+                <div className={`flex flex-col justify-center h-[100vh] w-[100vw] z-[100] ${isZoomedOut ? "bg-gray-500/0" :"bg-gray-700"}`}>
                   {/* Computer screen container */}
-                  <div className={`relative transition-all ease-in-out duration-300 ${isZoomedOut ? "w-[80%] aspect-[4/3] z-2 left-[10%] top-[-10%]" : "w-[100vw] h-[100vh]"}`}>
+                  <div className={`relative transition-all ease-in-out duration-300 ${isZoomedOut ? "w-[90%] aspect-[4/3] z-2 left-[5%] top-[-10%]" : "w-[100vw] h-[100vh]"}`}>
                     <div
                       style={{ filter: "url(#crt-curve)" }}
                       className={`absolute overflow-hidden transition-all ease-in-out duration-300 ${isZoomedOut ? "h-[68%] w-[66.5%] top-[8%] left-[16%]" : "w-[99%] h-[99%] left-[0.5%] rounded-[2rem]"}`}

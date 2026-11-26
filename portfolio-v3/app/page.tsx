@@ -10,7 +10,7 @@ function DefaultLoadPosition() {
     // Scroll to os center on mount
     window.scrollTo({
       left: window.innerWidth * 0.5,
-      top: window.innerHeight * 0.5,
+      top: window.innerHeight * 0.37,
       behavior: "instant",
     });
   }, []);
@@ -106,6 +106,7 @@ export default function Home() {
 
   // Handler for escaping matrix
   const [isZoomedOut, setIsZoomedOut] = useState(false);
+  const [zoomScale, setZoomScale] = useState(1);
   const handleEscape = () => {
     console.log("Escaping matrix, zooming out.");
     setIsZoomedOut((prev) => !prev);
@@ -113,7 +114,7 @@ export default function Home() {
 
   return (
     <>
-      <CrtSvgFilter scale={isZoomedOut ? 150 : 40} />
+      <CrtSvgFilter scale={isZoomedOut ? 60 : 20} />
       <TransformWrapper
         initialScale={1}
         minScale={0.5}
@@ -122,25 +123,33 @@ export default function Home() {
         pinch={{ disabled: true }}
         panning={{ disabled: true }}
         doubleClick={{ disabled: true }}
+        onTransform={(_ref, state) =>
+          setZoomScale((prev) => (Math.abs(prev - state.scale) < 0.001 ? prev : state.scale))
+        }
         >  
           {/* page container (must have for zoom to work) */}
-          <div className="absolute flex flex-row w-[200vw] h-[200vh] bg-pink-500">
+          <div className="absolute flex flex-row justify-center w-[200vw] h-[200vh] bg-green-600">
             <div>
               <TransformComponent>
-                <div className="relative flex flex-col justify-content w-[50vw] h-[175vh] bg-blue-500/50 z-0"/>
-                <div className="flex flex-col justify-content h-[175vh] w-[100vw] bg-gray-500/50 z-0">
+                <div className="flex flex-col justify-center h-[175vh] w-[100vw] bg-gray-500 z-0">
                   {/* Computer screen container */}
-                  <div className={`relative self-center transition-all ease-in-out duration-300 ${isZoomedOut ? "w-[80%] h-[70%%] mt-[36vh] aspect-[4/3] z-2" : "w-[150vw] h-[152vh] mt-[36vh] ml-[2vw]"}`}>
+                  <div className={`relative transition-all ease-in-out duration-300 ${isZoomedOut ? "w-[80%] aspect-[4/3] z-2 left-[10%] top-[-10%]" : "w-[100vw] h-[100vh]"}`}>
                     <div
                       style={{ filter: "url(#crt-curve)" }}
-                      className={`absolute self-center overflow-hidden rounded-[2rem] ${isZoomedOut ? "h-[73%] w-[71%] top-[5%] left-[13.5%]" : "w-[64.4%] h-[66%] left-[17%] top-[9%]"}`}
+                      className={`absolute overflow-hidden transition-all ease-in-out duration-300 ${isZoomedOut ? "h-[68%] w-[66.5%] top-[8%] left-[16%]" : "w-[99%] h-[99%] left-[0.5%] rounded-[2rem]"}`}
                     >
-                      <OsScreen onMatrixEscape={handleEscape}/>
+                      <OsScreen
+                        onMatrixEscape={handleEscape}
+                        zoomScale={zoomScale}
+                        isZoomedOut={isZoomedOut}
+                      />
                     </div>
-                    <img src="/media/crtMonitor.png" className={`relative self-center w-[100%] h-[100%]`}/>
+                    <img
+                      src="/media/crtMonitor.png"
+                      className={`pointer-events-none select-none relative w-[100%] h-[100%] ${isZoomedOut ? "opacity-100" : "opacity-0"}`}
+                    />
                   </div>
                 </div>
-                <div className="relative w-[50vw] h-[175vh] bg-yellow-500/50 z-0" />
               </TransformComponent>
             </div>
           </div>

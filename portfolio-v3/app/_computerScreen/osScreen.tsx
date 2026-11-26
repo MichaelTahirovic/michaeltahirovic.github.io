@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import Tab from "./components/tab";
 import Dock from "./dock";
 import AppIcon from "./components/appIcon";
-import ReactGridLayout, { getCompactor, useContainerWidth } from "react-grid-layout";
+import ReactGridLayout, { getCompactor, useContainerWidth, type Layout } from "react-grid-layout";
+import { createScaledStrategy } from "react-grid-layout/core";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
 import { Carousel } from "@/app/_computerScreen/components/carousel-base";
@@ -15,12 +16,23 @@ const iconCompactor = getCompactor(null, false, true);
 // 2. Tab Grid Compactor: fluid, allows free overlap, tabs don't push each other
 const tabCompactor = getCompactor(null, true, false);
 
+const TABS_INIT_LAYOUT: Layout = [
+  { i: "tab-1", x: 18, y: 2, w: 30, h: 16, minW: 12, minH: 8, isBounded: true },
+  { i: "tab-2", x: 19, y: 3, w: 30, h: 16, minW: 12, minH: 8, isBounded: true },
+  { i: "tab-3", x: 20, y: 4, w: 30, h: 16, minW: 12, minH: 8, isBounded: true },
+];
+
 export default function OsScreen({
   onMatrixEscape,
+  zoomScale = 1,
+  isZoomedOut = false,
 }: {
   onMatrixEscape?: () => void;
+  zoomScale?: number;
+  isZoomedOut?: boolean;
 }) {
   const { width, containerRef, mounted } = useContainerWidth();
+  const positionStrategy = useMemo(() => createScaledStrategy(zoomScale), [zoomScale]);
 
   // Desktop icon grid sizing (~100px cells)
   const ICON_CELL_WIDTH = 100;
@@ -53,11 +65,33 @@ export default function OsScreen({
 
 
   // Layer 2: Open tabs layout
-  const tabsInitLayout = [
-    { i: "tab-1", x: 18, y: 2, w: 30, h: 16, minW: 12, minH: 8, isBounded: true },
-    { i: "tab-2", x: 19, y: 3, w: 30, h: 16, minW: 12, minH: 8, isBounded: true },
-    { i: "tab-3", x: 20, y: 4, w: 30, h: 16, minW: 12, minH: 8, isBounded: true },
-  ];
+  const [tabsLayout, setTabsLayout] = useState<Layout>(TABS_INIT_LAYOUT);
+  const prevZoomedOutRef = useRef(isZoomedOut);
+  const savedZoomedInLayoutRef = useRef<Layout | null>(null);
+
+  useEffect(() => {
+    if (prevZoomedOutRef.current === isZoomedOut) return;
+    prevZoomedOutRef.current = isZoomedOut;
+
+    if (isZoomedOut) {
+      setTabsLayout((current) => {
+        savedZoomedInLayoutRef.current = current;
+        const targetCols = Math.max(12, Math.floor((width * 0.53) / FLUID_STEP));
+        return current.map((item) => {
+          const minW = item.minW ?? 12;
+          const minH = item.minH ?? 8;
+          const newW = Math.min(targetCols, Math.max(minW, Math.round(item.w * 0.65)));
+          const newH = Math.max(minH, Math.round(item.h * 0.7));
+          const maxX = Math.max(0, targetCols - newW);
+          const newX = Math.min(Math.max(0, Math.round(item.x * 0.35)), maxX);
+          const newY = Math.max(0, Math.round(item.y * 0.5));
+          return { ...item, x: newX, y: newY, w: newW, h: newH };
+        });
+      });
+    } else if (savedZoomedInLayoutRef.current) {
+      setTabsLayout(savedZoomedInLayoutRef.current);
+    }
+  }, [isZoomedOut, width]);
 
   // Track visibility of each tab window
   const [openTabs, setOpenTabs] = useState<Record<string, boolean>>({
@@ -97,6 +131,7 @@ export default function OsScreen({
 
   return (
     <div className="relative flex flex-col flex-1 w-full h-full bg-green-100 overflow-hidden select-none">
+      <img src="/media/pixel-background.png" className="[image-rendering:pixelated] absolute w-full h-full" />
       <div ref={containerRef} className="relative w-full mb-20 flex-1">
         {mounted && (
           <>
@@ -106,6 +141,7 @@ export default function OsScreen({
                 layout={appInitLayout}
                 width={width}
                 compactor={iconCompactor}
+                positionStrategy={positionStrategy}
                 gridConfig={{ cols: iconCols, rowHeight: 100, maxRows: iconMaxRows }}
               >
                 <div key="a">
@@ -136,9 +172,11 @@ export default function OsScreen({
             {/* pointer-events-none lets clicks on empty space pass through to the icons below */}
             <div className="absolute inset-0 z-10 pointer-events-none">
               <ReactGridLayout
-                layout={tabsInitLayout}
+                layout={tabsLayout}
+                onLayoutChange={(newLayout) => setTabsLayout(newLayout)}
                 width={width}
                 compactor={tabCompactor}
+                positionStrategy={positionStrategy}
                 gridConfig={{ cols: fluidCols, rowHeight: FLUID_STEP }}
                 onDragStart={(_layout, _oldItem, newItem) => {
                   if (newItem) bringToFront(newItem.i);

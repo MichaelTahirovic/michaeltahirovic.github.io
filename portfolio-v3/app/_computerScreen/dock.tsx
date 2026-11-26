@@ -22,9 +22,9 @@ function HomeButton({ escapeMatrix }: { escapeMatrix?: () => void }) {
                 }
                 setZoomedOut((prev) => !prev);
             }}
-            className="flex items-center self-center w-16 h-[10vh] mt-2 hover:cursor-pointer"
+            className="flex items-center self-center w-16 h-16 rounded-sm bg-gray-400 hover:bg-gray-600 hover:cursor-pointer"
         >
-            <img src="/media/Windows_logo.png"/>
+            <img src="/media/mtosLogo.svg"/>
         </button>
     );
 }
@@ -32,8 +32,10 @@ function HomeButton({ escapeMatrix }: { escapeMatrix?: () => void }) {
 export default function Dock({ onMatrixEscape }: { onMatrixEscape?: () => void }) {
 
     return (
-        <div className="absolute flex flex-row justify-center bottom-0  z-10 w-full h-20 bg-blue-500/50">
-            < HomeButton escapeMatrix={onMatrixEscape}/>
+        <div className="absolute flex flex-row pl-4 pr-4 pt-2 pb-2 bottom-0  z-10 w-full h-20 bg-blue-400/80">
+            <div className="">
+                <HomeButton escapeMatrix={onMatrixEscape} />
+            </div>
         </div>
     );
 }

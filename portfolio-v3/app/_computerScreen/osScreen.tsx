@@ -4,8 +4,8 @@ import { useState, useEffect, useMemo, useRef } from "react";
 import Tab from "./components/tab";
 import Dock from "./dock";
 import AppIcon from "./components/appIcon";
-import ReactGridLayout, { getCompactor, useContainerWidth, type Layout } from "react-grid-layout";
-import { createScaledStrategy } from "react-grid-layout/core";
+import ReactGridLayout, { getCompactor, setTransform, useContainerWidth, type Layout } from "react-grid-layout";
+import { gridBounds, minMaxSize, type LayoutConstraint, type LayoutItem } from "react-grid-layout/core";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
 import { Carousel } from "@/app/_computerScreen/components/carousel-base";
@@ -16,11 +16,25 @@ const iconCompactor = getCompactor(null, false, true);
 // 2. Tab Grid Compactor: fluid, allows free overlap, tabs don't push each other
 const tabCompactor = getCompactor(null, true, false);
 
+const FLUID_STEP = 20;
+
 const TABS_INIT_LAYOUT: Layout = [
   { i: "tab-1", x: 18, y: 2, w: 30, h: 16, minW: 12, minH: 8, isBounded: true },
   { i: "tab-2", x: 19, y: 3, w: 30, h: 16, minW: 12, minH: 8, isBounded: true },
   { i: "tab-3", x: 20, y: 4, w: 30, h: 16, minW: 12, minH: 8, isBounded: true },
 ];
+
+const toZoomedOutItem = (item: LayoutItem, containerWidth: number): LayoutItem => {
+  const targetCols = Math.max(12, Math.floor((containerWidth * 0.53) / FLUID_STEP));
+  const minW = item.minW ?? 12;
+  const minH = item.minH ?? 8;
+  const newW = Math.min(targetCols, Math.max(minW, Math.round(item.w * 0.65)));
+  const newH = Math.max(minH, Math.round(item.h * 0.7));
+  const maxX = Math.max(0, targetCols - newW);
+  const newX = Math.min(Math.max(0, Math.round(item.x * 0.35)), maxX);
+  const newY = Math.max(0, Math.round(item.y * 0.5));
+  return { ...item, x: newX, y: newY, w: newW, h: newH };
+};
 
 export default function OsScreen({
   onMatrixEscape,
@@ -32,7 +46,14 @@ export default function OsScreen({
   isZoomedOut?: boolean;
 }) {
   const { width, containerRef, mounted } = useContainerWidth();
-  const positionStrategy = useMemo(() => createScaledStrategy(zoomScale), [zoomScale]);
+  const positionStrategy = useMemo(
+    () => ({
+      type: "transform" as const,
+      scale: zoomScale,
+      calcStyle: setTransform,
+    }),
+    [zoomScale]
+  );
   const screenRef = useRef<HTMLDivElement>(null);
   const cursorRef = useRef<HTMLImageElement>(null);
 
@@ -63,7 +84,6 @@ export default function OsScreen({
   const iconCols = Math.max(1, Math.floor(width / ICON_CELL_WIDTH));
 
   // Fluid window/tab grid sizing (~20px small step for smooth, free placement)
-  const FLUID_STEP = 20;
   const fluidCols = Math.max(1, Math.floor(width / FLUID_STEP));
 
   // Layer 1: App icon layout
@@ -88,6 +108,27 @@ export default function OsScreen({
   const iconMaxRows = containerHeight > 0 ? Math.max(1, Math.floor((containerHeight - 10) / 110)) : 6;
 
 
+  const tabConstraints = useMemo<LayoutConstraint[]>(() => {
+    // Each fluid row is rowHeight (20) + default vertical margin (10) = 30px; top margin is 10px.
+    // Keep at least 60px of the tab's top sticking out above containerHeight (which ends at the dock).
+    const maxTabY =
+      containerHeight > 0
+        ? Math.max(0, Math.floor((containerHeight - 70) / (FLUID_STEP + 10)))
+        : 20;
+
+    const keepHeaderAboveDock: LayoutConstraint = {
+      name: "keepHeaderAboveDock",
+      constrainPosition(_item, x, y) {
+        return {
+          x,
+          y: Math.min(Math.max(0, y), maxTabY),
+        };
+      },
+    };
+
+    return [gridBounds, minMaxSize, keepHeaderAboveDock];
+  }, [containerHeight]);
+
   // Layer 2: Open tabs layout
   const [tabsLayout, setTabsLayout] = useState<Layout>(TABS_INIT_LAYOUT);
   const prevZoomedOutRef = useRef(isZoomedOut);
@@ -100,17 +141,7 @@ export default function OsScreen({
     if (isZoomedOut) {
       setTabsLayout((current) => {
         savedZoomedInLayoutRef.current = current;
-        const targetCols = Math.max(12, Math.floor((width * 0.53) / FLUID_STEP));
-        return current.map((item) => {
-          const minW = item.minW ?? 12;
-          const minH = item.minH ?? 8;
-          const newW = Math.min(targetCols, Math.max(minW, Math.round(item.w * 0.65)));
-          const newH = Math.max(minH, Math.round(item.h * 0.7));
-          const maxX = Math.max(0, targetCols - newW);
-          const newX = Math.min(Math.max(0, Math.round(item.x * 0.35)), maxX);
-          const newY = Math.max(0, Math.round(item.y * 0.5));
-          return { ...item, x: newX, y: newY, w: newW, h: newH };
-        });
+        return current.map((item) => toZoomedOutItem(item, width));
       });
     } else if (savedZoomedInLayoutRef.current) {
       setTabsLayout(savedZoomedInLayoutRef.current);
@@ -141,9 +172,21 @@ export default function OsScreen({
     });
   };
 
-  // Open the tab when the corresponding icon is clicked
+  // Open the tab when the corresponding icon is clicked and reset it to its default position
   const openAppFromIcon = (tabId: string) => {
     setOpenTabs((prev) => ({ ...prev, [tabId]: true }));
+    const defaultItem = TABS_INIT_LAYOUT.find((item) => item.i === tabId);
+    if (defaultItem) {
+      const resetItem = isZoomedOut ? toZoomedOutItem(defaultItem, width) : defaultItem;
+      setTabsLayout((current) =>
+        current.map((item) => (item.i === tabId ? { ...item, ...resetItem } : item))
+      );
+      if (savedZoomedInLayoutRef.current) {
+        savedZoomedInLayoutRef.current = savedZoomedInLayoutRef.current.map((item) =>
+          item.i === tabId ? { ...item, ...defaultItem } : item
+        );
+      }
+    }
     bringToFront(tabId);
   };
 
@@ -207,6 +250,7 @@ export default function OsScreen({
                 width={width}
                 compactor={tabCompactor}
                 positionStrategy={positionStrategy}
+                constraints={tabConstraints}
                 gridConfig={{ cols: fluidCols, rowHeight: FLUID_STEP }}
                 onDragStart={(_layout, _oldItem, newItem) => {
                   if (newItem) bringToFront(newItem.i);

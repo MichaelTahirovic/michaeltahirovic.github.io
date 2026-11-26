@@ -33,6 +33,30 @@ export default function OsScreen({
 }) {
   const { width, containerRef, mounted } = useContainerWidth();
   const positionStrategy = useMemo(() => createScaledStrategy(zoomScale), [zoomScale]);
+  const screenRef = useRef<HTMLDivElement>(null);
+  const cursorRef = useRef<HTMLImageElement>(null);
+
+  const updateCursorPosition = (e: React.MouseEvent<HTMLDivElement>) => {
+    const screen = screenRef.current;
+    const cursor = cursorRef.current;
+    if (!screen || !cursor) return;
+
+    const rect = screen.getBoundingClientRect();
+    const scaleX = rect.width / screen.offsetWidth || 1;
+    const scaleY = rect.height / screen.offsetHeight || 1;
+    const x = (e.clientX - rect.left) / scaleX;
+    const y = (e.clientY - rect.top) / scaleY;
+
+    // Offset x by -5px so the arrow tip in windowsXpCursor.png (~20% from left edge at 28px width) aligns with the real click point
+    cursor.style.transform = `translate3d(${x - 5}px, ${y}px, 0)`;
+    cursor.style.opacity = "1";
+  };
+
+  const hideCursor = () => {
+    if (cursorRef.current) {
+      cursorRef.current.style.opacity = "0";
+    }
+  };
 
   // Desktop icon grid sizing (~100px cells)
   const ICON_CELL_WIDTH = 100;
@@ -130,7 +154,13 @@ export default function OsScreen({
   };
 
   return (
-    <div className="relative flex flex-col flex-1 w-full h-full bg-green-100 overflow-hidden select-none">
+    <div
+      ref={screenRef}
+      onMouseMove={updateCursorPosition}
+      onMouseEnter={updateCursorPosition}
+      onMouseLeave={hideCursor}
+      className="os-custom-cursor relative flex flex-col flex-1 w-full h-full bg-green-100 overflow-hidden select-none"
+    >
       <img src="/media/pixel-background.png" className="[image-rendering:pixelated] absolute w-full h-full" />
       <div ref={containerRef} className="relative w-full mb-20 flex-1">
         {mounted && (
@@ -245,6 +275,14 @@ export default function OsScreen({
         )}
       </div>
       <Dock onMatrixEscape={onMatrixEscape} />
+      <img
+        ref={cursorRef}
+        src="/media/windowsXpCursor.png"
+        alt=""
+        aria-hidden="true"
+        style={{ opacity: 0, willChange: "transform" }}
+        className="pointer-events-none select-none absolute top-0 left-0 z-[9999] w-7 h-7 [image-rendering:pixelated]"
+      />
     </div>
   );
 }

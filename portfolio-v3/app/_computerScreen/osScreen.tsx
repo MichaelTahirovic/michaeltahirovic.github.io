@@ -89,11 +89,13 @@ export default function OsScreen({
   );
   const screenRef = useRef<HTMLDivElement>(null);
   const cursorRef = useRef<HTMLImageElement>(null);
+  const pointerCursorRef = useRef<HTMLImageElement>(null);
 
   const updateCursorPosition = (e: React.MouseEvent<HTMLDivElement>) => {
     const screen = screenRef.current;
     const cursor = cursorRef.current;
-    if (!screen || !cursor) return;
+    const pointerCursor = pointerCursorRef.current;
+    if (!screen || !cursor || !pointerCursor) return;
 
     const rect = screen.getBoundingClientRect();
     const scaleX = rect.width / screen.offsetWidth || 1;
@@ -101,14 +103,32 @@ export default function OsScreen({
     const x = (e.clientX - rect.left) / scaleX;
     const y = (e.clientY - rect.top) / scaleY;
 
-    // Offset x by -5px so the arrow tip in windowsXpCursor.png (~20% from left edge at 28px width) aligns with the real click point
-    cursor.style.transform = `translate3d(${x - 5}px, ${y}px, 0)`;
-    cursor.style.opacity = "1";
+    const target = e.target as HTMLElement | null;
+    const isPointer = Boolean(
+      target?.closest(
+        'button, a, [role="button"], input[type="button"], input[type="submit"], select, label[for], [class*="cursor-pointer"]'
+      )
+    );
+
+    if (isPointer) {
+      // Offset by (-11px, -2px) so the fingertip in windowsXpCursorPoint.png (~41% X, ~8% Y at 28px) aligns with the real click point
+      pointerCursor.style.transform = `translate3d(${x - 11}px, ${y - 2}px, 0)`;
+      pointerCursor.style.opacity = "1";
+      cursor.style.opacity = "0";
+    } else {
+      // Offset x by -5px so the arrow tip in windowsXpCursor.png (~20% from left edge at 28px width) aligns with the real click point
+      cursor.style.transform = `translate3d(${x - 5}px, ${y}px, 0)`;
+      cursor.style.opacity = "1";
+      pointerCursor.style.opacity = "0";
+    }
   };
 
   const hideCursor = () => {
     if (cursorRef.current) {
       cursorRef.current.style.opacity = "0";
+    }
+    if (pointerCursorRef.current) {
+      pointerCursorRef.current.style.opacity = "0";
     }
   };
 
@@ -407,6 +427,14 @@ export default function OsScreen({
       <img
         ref={cursorRef}
         src="/media/windowsXpCursor.png"
+        alt=""
+        aria-hidden="true"
+        style={{ opacity: 0, willChange: "transform" }}
+        className="pointer-events-none select-none absolute top-0 left-0 z-[9999] w-7 h-7 [image-rendering:pixelated]"
+      />
+      <img
+        ref={pointerCursorRef}
+        src="/media/windowsXpCursorPoint.png"
         alt=""
         aria-hidden="true"
         style={{ opacity: 0, willChange: "transform" }}
